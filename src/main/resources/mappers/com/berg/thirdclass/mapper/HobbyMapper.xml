@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.berg.thirdclass.mapper.HobbyMapper">
+
+    <sql id="TableName">
+        hobby
+    </sql>
+
+    <!-- 基本映射结果 -->
+    <resultMap id="BaseResultMap" type="com.berg.thirdclass.dto.HobbyDto">
+        <id column="HOBBY_ID" property="hobbyId" jdbcType="BIGINT"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 基本属性 -->
+    <sql id="BaseSql">
+        ${prefix}.HOBBY_ID,
+        ${prefix}.NAME
+    </sql>
+
+    <!-- 基本条件 -->
+    <sql id="BaseCondition">
+        <if test="hobbyId!=null and hobbyId!=0">
+            AND ${prefix}.HOBBY_ID = #{hobbyId}
+        </if>
+        <if test="name!=null and !name.equals('')">
+            AND ${prefix}.NAME like CONCAT('%', CONCAT(#{name, jdbcType=VARCHAR}, '%'))
+        </if>
+    </sql>
+
+    <!-- 基本的条件查询 -->
+    <select id="select" resultMap="com.berg.thirdclass.mapper.HobbyMapper.BaseResultMap"
+            parameterType="com.berg.thirdclass.dto.HobbyDto">
+
+        SELECT
+        <include refid="com.berg.thirdclass.mapper.HobbyMapper.BaseSql">
+            <property name="prefix" value="h"/>
+        </include>
+
+        FROM
+        <include refid="com.berg.thirdclass.mapper.HobbyMapper.TableName"/> h
+
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <include refid="com.berg.thirdclass.mapper.HobbyMapper.BaseCondition">
+                <property name="prefix" value="h"/>
+            </include>
+        </trim>
+    </select>
+
+
+</mapper>

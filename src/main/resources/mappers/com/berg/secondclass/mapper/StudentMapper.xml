@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.berg.secondclass.mapper.StudentMapper">
+
+    <sql id="TableName">
+        student
+    </sql>
+
+    <!-- 基本映射结果 -->
+    <resultMap id="BaseResultMap" type="com.berg.secondclass.dto.StudentDto">
+        <id column="STUDENT_ID" property="studentId" jdbcType="BIGINT"/>
+        <result column="DEPARTMENT_ID" property="departmentId" jdbcType="BIGINT"/>
+        <result column="NUMBER" property="number" jdbcType="VARCHAR"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="BIRTHDAY" property="birthday" jdbcType="DATE"/>
+    </resultMap>
+
+    <!-- 扩展映射结果 -->
+    <resultMap id="ExtendsResultMap" type="com.berg.secondclass.dto.StudentDto"
+        extends="com.berg.secondclass.mapper.StudentMapper.BaseResultMap">
+
+        <!-- 部门 -->
+        <association property="departmentDto" column="department_id" columnPrefix="d_"
+                     resultMap="com.berg.secondclass.mapper.DepartmentMapper.BaseResultMap"/>
+
+        <!-- 爱好 -->
+        <collection property="hobbyDtos" column="student_id" columnPrefix="h_"
+                    ofType="com.berg.secondclass.dto.HobbyDto"
+                    resultMap="com.berg.secondclass.mapper.HobbyMapper.BaseResultMap"/>
+    </resultMap>
+
+    <!-- 基本属性 -->
+    <sql id="BaseSql">
+        ${prefix}.STUDENT_ID,
+        ${prefix}.DEPARTMENT_ID,
+        ${prefix}.NUMBER,
+        ${prefix}.NAME,
+        ${prefix}.BIRTHDAY
+    </sql>
+
+    <!-- 扩展属性 -->
+    <sql id="ExtendsSql">
+        ${prefix}.STUDENT_ID      ${suffix}_STUDENT_ID,
+        ${prefix}.DEPARTMENT_ID   ${suffix}_DEPARTMENT_ID,
+        ${prefix}.NUMBER          ${suffix}_NUMBER,
+        ${prefix}.NAME            ${suffix}_NAME,
+        ${prefix}.BIRTHDAY        ${suffix}_BIRTHDAY
+    </sql>
+
+    <!-- 基本条件 -->
+    <sql id="BaseCondition">
+
+    </sql>
+
+    <select id="select" resultMap="com.berg.secondclass.mapper.StudentMapper.BaseResultMap"
+            parameterType="com.berg.secondclass.dto.StudentDto">
+        SELECT
+        <include refid="com.berg.secondclass.mapper.StudentMapper.BaseSql">
+            <property name="prefix" value="s"/>
+        </include>
+
+        FROM
+        <include refid="com.berg.secondclass.mapper.StudentMapper.TableName"/> s
+
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <include refid="com.berg.secondclass.mapper.StudentMapper.BaseCondition">
+                <property name="prefix" value="s"/>
+            </include>
+        </trim>
+    </select>
+
+    <select id="selectWithExtends" resultMap="com.berg.secondclass.mapper.StudentMapper.ExtendsResultMap"
+            parameterType="com.berg.secondclass.dto.StudentDto">
+        SELECT
+        <include refid="com.berg.secondclass.mapper.StudentMapper.BaseSql">
+            <property name="prefix" value="s"/>
+        </include>,
+        <include refid="com.berg.secondclass.mapper.DepartmentMapper.ExtendsSql">
+            <property name="prefix" value="d"/>
+            <property name="suffix" value="d"/>
+        </include>,
+        <include refid="com.berg.secondclass.mapper.HobbyMapper.ExtendsSql">
+            <property name="prefix" value="h"/>
+            <property name="suffix" value="h"/>
+        </include>
+
+        FROM
+        <include refid="com.berg.secondclass.mapper.StudentMapper.TableName"/> s
+        LEFT JOIN <include refid="com.berg.secondclass.mapper.DepartmentMapper.TableName"/> d
+        ON s.DEPARTMENT_ID = d.DEPARTMENT_ID
+        LEFT JOIN <include refid="com.berg.secondclass.mapper.StudentHobbyMapper.TableName"/> sh
+        ON s.STUDENT_ID = sh.STUDENT_ID
+        LEFT JOIN <include refid="com.berg.secondclass.mapper.HobbyMapper.TableName"/> h
+        ON sh.HOBBY_ID = h.HOBBY_ID
+
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <include refid="com.berg.secondclass.mapper.StudentMapper.BaseCondition">
+                <property name="prefix" value="s"/>
+            </include>
+        </trim>
+    </select>
+</mapper>

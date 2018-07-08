@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.berg.secondclass.mapper.StudentHobbyMapper">
+
+    <sql id="TableName">
+        student_hobby
+    </sql>
+
+    <!-- 基本映射结果 -->
+    <resultMap id="BaseResultMap" type="com.berg.secondclass.dto.StudentHobbyDto">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="STUDENT_ID" property="studentId" jdbcType="BIGINT"/>
+        <result column="HOBBY_ID" property="hobbyId" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <!-- 扩展的映射结果 -->
+    <resultMap id="ExtendsResultMap" type="com.berg.secondclass.dto.StudentHobbyDto"
+               extends="com.berg.secondclass.mapper.StudentHobbyMapper.BaseResultMap">
+        <!-- 学生 -->
+        <association property="studentDto" column="student_id" columnPrefix="s_"
+                     resultMap="com.berg.secondclass.mapper.StudentMapper.BaseResultMap"/>
+
+        <!-- 爱好 -->
+        <association property="hobbyDto" column="hobby_id" columnPrefix="h_"
+                     resultMap="com.berg.secondclass.mapper.HobbyMapper.BaseResultMap"/>
+    </resultMap>
+
+    <!-- 基本属性 -->
+    <sql id="BaseSql">
+        ${prefix}.ID,
+        ${prefix}.STUDENT_ID,
+        ${prefix}.HOBBY_ID
+    </sql>
+
+    <!-- 基本属性 -->
+    <sql id="ExtendsSql">
+        ${prefix}.ID            ${suffix}_ID,
+        ${prefix}.STUDENT_ID    ${suffix}_STUDENT_ID,
+        ${prefix}.HOBBY_ID      ${suffix}_HOBBY_ID
+    </sql>
+
+    <!-- 基本条件 -->
+    <sql id="BaseCondition">
+        <if test="id!=null and id!=0">
+            AND ${prefix}.ID = #{id}
+        </if>
+        <if test="studentId!=null and studentId!=0">
+            AND ${prefix}.STUDENT_ID = #{studentId}
+        </if>
+        <if test="hobbyId!=null and hobbyId!=0">
+            AND ${prefix}.HOBBY_ID = #{hobbyId}
+        </if>
+    </sql>
+
+    <!-- 基本的条件查询 -->
+    <select id="select" resultMap="com.berg.secondclass.mapper.StudentHobbyMapper.BaseResultMap"
+            parameterType="com.berg.secondclass.dto.StudentHobbyDto">
+
+        SELECT
+        <include refid="com.berg.secondclass.mapper.StudentHobbyMapper.BaseSql">
+            <property name="prefix" value="sh"/>
+        </include>
+
+        FROM
+        <include refid="com.berg.secondclass.mapper.StudentHobbyMapper.TableName"/> sh
+
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <include refid="com.berg.secondclass.mapper.StudentHobbyMapper.BaseCondition">
+                <property name="prefix" value="sh"/>
+            </include>
+        </trim>
+    </select>
+
+
+    <select id="selectWithExtends" resultMap="com.berg.secondclass.mapper.StudentHobbyMapper.ExtendsResultMap"
+            parameterType="com.berg.secondclass.dto.StudentHobbyDto">
+        SELECT
+        <include refid="com.berg.secondclass.mapper.StudentHobbyMapper.BaseSql">
+            <property name="prefix" value="sh"/>
+        </include>,
+        <include refid="com.berg.secondclass.mapper.StudentMapper.ExtendsSql">
+            <property name="prefix" value="s"/>
+            <property name="suffix" value="s"/>
+        </include>,
+        <include refid="com.berg.secondclass.mapper.HobbyMapper.ExtendsSql">
+            <property name="prefix" value="h"/>
+            <property name="suffix" value="h"/>
+        </include>
+
+        FROM
+        <include refid="com.berg.secondclass.mapper.StudentHobbyMapper.TableName"/> sh
+        LEFT JOIN <include refid="com.berg.secondclass.mapper.StudentMapper.TableName"/> s
+        ON sh.STUDENT_ID = s.STUDENT_ID
+        LEFT JOIN <include refid="com.berg.secondclass.mapper.HobbyMapper.TableName"/> h
+        ON sh.HOBBY_ID = h.HOBBY_ID
+
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <include refid="com.berg.secondclass.mapper.StudentHobbyMapper.BaseCondition">
+                <property name="prefix" value="sh"/>
+            </include>
+        </trim>
+
+    </select>
+
+
+</mapper>
