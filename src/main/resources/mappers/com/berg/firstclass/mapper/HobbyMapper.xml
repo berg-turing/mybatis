@@ -20,12 +20,6 @@
         ${prefix}.NAME
     </sql>
 
-    <!-- 基本属性 -->
-    <sql id="ExtendsSql">
-        ${prefix}.HOBBY_ID  ${suffix}_HOBBY_ID,
-        ${prefix}.NAME      ${suffix}_NAME
-    </sql>
-
     <!-- 基本条件 -->
     <sql id="BaseCondition">
         <if test="hobbyId!=null and hobbyId!=0">

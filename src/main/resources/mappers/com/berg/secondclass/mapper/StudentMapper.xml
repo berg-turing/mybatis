@@ -51,7 +51,18 @@
 
     <!-- 基本条件 -->
     <sql id="BaseCondition">
-
+        <if test="studentId!=null and studentId!=0">
+            AND ${prefix}.STUDENT_ID = #{studentId}
+        </if>
+        <if test="departmentId!=null and departmentId!=0">
+            AND ${prefix}.DEPARTMENT_ID = #{departmentId}
+        </if>
+        <if test="number!=null and !number.equals('')">
+            AND ${prefix}.NUMBER like CONCAT('%', CONCAT(#{number, jdbcType=VARCHAR}, '%'))
+        </if>
+        <if test="name!=null and !name.equals('')">
+            AND ${prefix}.NAME like CONCAT('%', CONCAT(#{name, jdbcType=VARCHAR}, '%'))
+        </if>
     </sql>
 
     <select id="select" resultMap="com.berg.secondclass.mapper.StudentMapper.BaseResultMap"

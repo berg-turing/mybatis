@@ -20,12 +20,6 @@
         ${prefix}.NAME
     </sql>
 
-    <!-- 扩展属性 -->
-    <sql id="ExtendsSql">
-        ${prefix}.DEPARTMENT_ID   ${suffix}_DEPARTMENT_ID,
-        ${prefix}.NAME            ${suffix}_NAME
-    </sql>
-
     <!-- 基本条件 -->
     <sql id="BaseCondition">
         <if test="departmentId!=null and departmentId!=0">

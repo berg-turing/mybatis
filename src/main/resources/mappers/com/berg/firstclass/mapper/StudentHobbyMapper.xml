@@ -34,13 +34,6 @@
         ${prefix}.HOBBY_ID
     </sql>
 
-    <!-- 基本属性 -->
-    <sql id="ExtendsSql">
-        ${prefix}.ID            ${suffix}_ID,
-        ${prefix}.STUDENT_ID    ${suffix}_STUDENT_ID,
-        ${prefix}.HOBBY_ID      ${suffix}_HOBBY_ID
-    </sql>
-
     <!-- 基本条件 -->
     <sql id="BaseCondition">
         <if test="id!=null and id!=0">

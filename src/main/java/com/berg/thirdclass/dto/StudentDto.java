@@ -40,10 +40,6 @@ public class StudentDto {
      */
     private String departmentName;
 
-    /**
-     * 爱好名称
-     */
-    private String hobbyName;
 
     public Long getStudentId() {
         return studentId;
@@ -102,15 +98,6 @@ public class StudentDto {
                 ", name='" + name + '\'' +
                 ", birthday=" + birthday +
                 ", departmentName='" + departmentName + '\'' +
-                ", hobbyName='" + hobbyName + '\'' +
                 '}';
-    }
-
-    public String getHobbyName() {
-        return hobbyName;
-    }
-
-    public void setHobbyName(String hobbyName) {
-        this.hobbyName = hobbyName;
     }
 }

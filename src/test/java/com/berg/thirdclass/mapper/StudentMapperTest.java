@@ -53,6 +53,7 @@ public class StudentMapperTest {
             StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
 
             StudentDto studentDto = new StudentDto();
+            studentDto.setDepartmentName("计算机");
 
             List<StudentDto> select = mapper.selectWithExtends(studentDto);
 
