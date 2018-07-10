@@ -4,39 +4,72 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
+    <!-- 配置信息 -->
+    <properties resource="db.properties">
+    </properties>
+
+    <!-- 设置 -->
     <settings>
+        <!-- 全局地开启或关闭配置文件中的所有映射器已经配置的任何缓存 -->
         <setting name="cacheEnabled" value="true" />
+
+        <!-- 允许 JDBC 支持自动生成主键,需要驱动兼容。
+            如果设置为 true 则这个设置强制使用自动生成主键 -->
         <setting name="useGeneratedKeys" value="true" />
+
+        <!-- 配置默认的执行器。
+            SIMPLE  就是普通的执行器;
+            REUSE   执行器会重用预处理语句(prepared statements);
+            BATCH   执行器将重用语句并执行批量更新。 -->
         <setting name="defaultExecutorType" value="REUSE" />
+
+        <!-- 指定 MyBatis 所用日志的具体实现,未指定时将自动查找。
+            SLF4J
+            LOG4J
+            LOG4J2
+            JDK_LOGGING
+            COMMONS_LOGGING
+            STDOUT_LOGGING
+            NO_LOGGING -->
         <setting name="logImpl" value="STDOUT_LOGGING" />
     </settings>
+
+    <!-- 类型别名 -->
+    <typeAliases>
+        <package name="com.berg.base.xmlconfigure.typealiases" />
+    </typeAliases>
+
+    <!-- 类型处理器 -->
+    <typeHandlers>
+        <package name="com.berg.base.xmlconfigure.typehandler" />
+    </typeHandlers>
 
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost:3306/mybatis"/>
-                <property name="username" value="root"/>
-                <property name="password" value="123456"/>
+                <property name="driver" value="${mysql.driver}"/>
+                <property name="url" value="${mysql.url}"/>
+                <property name="username" value="${mysql.username}"/>
+                <property name="password" value="${mysql.password}"/>
             </dataSource>
         </environment>
     </environments>
 
     <mappers>
-        <mapper resource="mappers/com/berg/application/firstclass/mapper/DepartmentMapper.xml"/>
-        <mapper resource="mappers/com/berg/application/firstclass/mapper/HobbyMapper.xml"/>
-        <mapper resource="mappers/com/berg/application/firstclass/mapper/StudentHobbyMapper.xml"/>
-        <mapper resource="mappers/com/berg/application/firstclass/mapper/StudentMapper.xml"/>
+        <mapper resource="com/berg/application/firstclass/mapper/DepartmentMapper.xml"/>
+        <mapper resource="com/berg/application/firstclass/mapper/HobbyMapper.xml"/>
+        <mapper resource="com/berg/application/firstclass/mapper/StudentHobbyMapper.xml"/>
+        <mapper resource="com/berg/application/firstclass/mapper/StudentMapper.xml"/>
 
-        <mapper resource="mappers/com/berg/application/secondclass/mapper/DepartmentMapper.xml"/>
-        <mapper resource="mappers/com/berg/application/secondclass/mapper/HobbyMapper.xml"/>
-        <mapper resource="mappers/com/berg/application/secondclass/mapper/StudentHobbyMapper.xml"/>
-        <mapper resource="mappers/com/berg/application/secondclass/mapper/StudentMapper.xml"/>
+        <mapper resource="com/berg/application/secondclass/mapper/DepartmentMapper.xml"/>
+        <mapper resource="com/berg/application/secondclass/mapper/HobbyMapper.xml"/>
+        <mapper resource="com/berg/application/secondclass/mapper/StudentHobbyMapper.xml"/>
+        <mapper resource="com/berg/application/secondclass/mapper/StudentMapper.xml"/>
 
-        <mapper resource="mappers/com/berg/application/thirdclass/mapper/DepartmentMapper.xml"/>
-        <mapper resource="mappers/com/berg/application/thirdclass/mapper/HobbyMapper.xml"/>
-        <mapper resource="mappers/com/berg/application/thirdclass/mapper/StudentHobbyMapper.xml"/>
-        <mapper resource="mappers/com/berg/application/thirdclass/mapper/StudentMapper.xml"/>
+        <mapper resource="com/berg/application/thirdclass/mapper/DepartmentMapper.xml"/>
+        <mapper resource="com/berg/application/thirdclass/mapper/HobbyMapper.xml"/>
+        <mapper resource="com/berg/application/thirdclass/mapper/StudentHobbyMapper.xml"/>
+        <mapper resource="com/berg/application/thirdclass/mapper/StudentMapper.xml"/>
     </mappers>
 </configuration>
