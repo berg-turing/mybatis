@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.berg.application.thirdclass.mapper.StudentHobbyMapper">
+
+    <sql id="TableName">
+        student_hobby
+    </sql>
+
+    <!-- 基本映射结果 -->
+    <resultMap id="BaseResultMap" type="com.berg.application.thirdclass.dto.StudentHobbyDto">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="STUDENT_ID" property="studentId" jdbcType="BIGINT"/>
+        <result column="HOBBY_ID" property="hobbyId" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <!-- 扩展的映射结果 -->
+    <resultMap id="ExtendsResultMap" type="com.berg.application.thirdclass.dto.StudentHobbyDto"
+               extends="com.berg.application.thirdclass.mapper.StudentHobbyMapper.BaseResultMap">
+        <result property="studentName" column="STUDENT_NAME" jdbcType="VARCHAR"/>
+        <result property="hobbyName" column="HOBBY_NAME" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 基本属性 -->
+    <sql id="BaseSql">
+        ${prefix}.ID,
+        ${prefix}.STUDENT_ID,
+        ${prefix}.HOBBY_ID
+    </sql>
+
+    <!-- 扩展属性 -->
+    <sql id="ExtendsSql">
+        ${prefixA}.NAME   STUDENT_NAME,
+        ${prefixB}.NAME   HOBBY_NAME
+    </sql>
+
+    <!-- 基本条件 -->
+    <sql id="BaseCondition">
+        <if test="id!=null and id!=0">
+            AND ${prefix}.ID = #{id}
+        </if>
+        <if test="studentId!=null and studentId!=0">
+            AND ${prefix}.STUDENT_ID = #{studentId}
+        </if>
+        <if test="hobbyId!=null and hobbyId!=0">
+            AND ${prefix}.HOBBY_ID = #{hobbyId}
+        </if>
+    </sql>
+
+    <!-- 扩展条件 -->
+    <sql id="ExtendsCondition">
+        <if test="studentName!=null and !studentName.equals('')">
+            AND ${prefixA}.NAME like CONCAT('%', CONCAT(#{studentName, jdbcType=VARCHAR}, '%'))
+        </if>
+        <if test="hobbyName!=null and !hobbyName.equals('')">
+            AND ${prefixB}.NAME like CONCAT('%', CONCAT(#{hobbyName, jdbcType=VARCHAR}, '%'))
+        </if>
+    </sql>
+
+    <!-- 基本的条件查询 -->
+    <select id="select" resultMap="com.berg.application.thirdclass.mapper.StudentHobbyMapper.BaseResultMap"
+            parameterType="com.berg.application.thirdclass.dto.StudentHobbyDto">
+
+        SELECT
+        <include refid="com.berg.application.thirdclass.mapper.StudentHobbyMapper.BaseSql">
+            <property name="prefix" value="sh"/>
+        </include>
+
+        FROM
+        <include refid="com.berg.application.thirdclass.mapper.StudentHobbyMapper.TableName"/> sh
+
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <include refid="com.berg.application.thirdclass.mapper.StudentHobbyMapper.BaseCondition">
+                <property name="prefix" value="sh"/>
+            </include>
+        </trim>
+    </select>
+
+
+    <select id="selectWithExtends" resultMap="com.berg.application.thirdclass.mapper.StudentHobbyMapper.ExtendsResultMap"
+            parameterType="com.berg.application.thirdclass.dto.StudentHobbyDto">
+        SELECT
+        <include refid="com.berg.application.thirdclass.mapper.StudentHobbyMapper.BaseSql">
+            <property name="prefix" value="sh"/>
+        </include>,
+        <include refid="com.berg.application.thirdclass.mapper.StudentHobbyMapper.ExtendsSql">
+            <property name="prefixA" value="s"/>
+            <property name="prefixB" value="h"/>
+        </include>
+
+        FROM
+        <include refid="com.berg.application.thirdclass.mapper.StudentHobbyMapper.TableName"/> sh
+        LEFT JOIN <include refid="com.berg.application.thirdclass.mapper.StudentMapper.TableName"/> s
+        ON sh.STUDENT_ID = s.STUDENT_ID
+        LEFT JOIN <include refid="com.berg.application.thirdclass.mapper.HobbyMapper.TableName"/> h
+        ON sh.HOBBY_ID = h.HOBBY_ID
+
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <include refid="com.berg.application.thirdclass.mapper.StudentHobbyMapper.BaseCondition">
+                <property name="prefix" value="sh"/>
+            </include>
+            <include refid="com.berg.application.thirdclass.mapper.StudentHobbyMapper.ExtendsCondition">
+                <property name="prefixA" value="s"/>
+                <property name="prefixB" value="h"/>
+            </include>
+        </trim>
+
+    </select>
+
+
+</mapper>

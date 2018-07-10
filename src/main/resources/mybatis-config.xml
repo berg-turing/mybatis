@@ -24,19 +24,19 @@
     </environments>
 
     <mappers>
-        <mapper resource="mappers/com/berg/firstclass/mapper/DepartmentMapper.xml"/>
-        <mapper resource="mappers/com/berg/firstclass/mapper/HobbyMapper.xml"/>
-        <mapper resource="mappers/com/berg/firstclass/mapper/StudentHobbyMapper.xml"/>
-        <mapper resource="mappers/com/berg/firstclass/mapper/StudentMapper.xml"/>
+        <mapper resource="mappers/com/berg/application/firstclass/mapper/DepartmentMapper.xml"/>
+        <mapper resource="mappers/com/berg/application/firstclass/mapper/HobbyMapper.xml"/>
+        <mapper resource="mappers/com/berg/application/firstclass/mapper/StudentHobbyMapper.xml"/>
+        <mapper resource="mappers/com/berg/application/firstclass/mapper/StudentMapper.xml"/>
 
-        <mapper resource="mappers/com/berg/secondclass/mapper/DepartmentMapper.xml"/>
-        <mapper resource="mappers/com/berg/secondclass/mapper/HobbyMapper.xml"/>
-        <mapper resource="mappers/com/berg/secondclass/mapper/StudentHobbyMapper.xml"/>
-        <mapper resource="mappers/com/berg/secondclass/mapper/StudentMapper.xml"/>
+        <mapper resource="mappers/com/berg/application/secondclass/mapper/DepartmentMapper.xml"/>
+        <mapper resource="mappers/com/berg/application/secondclass/mapper/HobbyMapper.xml"/>
+        <mapper resource="mappers/com/berg/application/secondclass/mapper/StudentHobbyMapper.xml"/>
+        <mapper resource="mappers/com/berg/application/secondclass/mapper/StudentMapper.xml"/>
 
-        <mapper resource="mappers/com/berg/thirdclass/mapper/DepartmentMapper.xml"/>
-        <mapper resource="mappers/com/berg/thirdclass/mapper/HobbyMapper.xml"/>
-        <mapper resource="mappers/com/berg/thirdclass/mapper/StudentHobbyMapper.xml"/>
-        <mapper resource="mappers/com/berg/thirdclass/mapper/StudentMapper.xml"/>
+        <mapper resource="mappers/com/berg/application/thirdclass/mapper/DepartmentMapper.xml"/>
+        <mapper resource="mappers/com/berg/application/thirdclass/mapper/HobbyMapper.xml"/>
+        <mapper resource="mappers/com/berg/application/thirdclass/mapper/StudentHobbyMapper.xml"/>
+        <mapper resource="mappers/com/berg/application/thirdclass/mapper/StudentMapper.xml"/>
     </mappers>
 </configuration>
