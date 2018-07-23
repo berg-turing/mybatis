@@ -1,4 +1,4 @@
-package com.berg.base.xmlconfigure.plugins;
+package com.berg.base.xmlconfigures.plugins;
 
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Invocation;

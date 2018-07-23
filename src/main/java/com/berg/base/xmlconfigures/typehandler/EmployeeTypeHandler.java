@@ -1,6 +1,6 @@
-package com.berg.base.xmlconfigure.typehandler;
+package com.berg.base.xmlconfigures.typehandler;
 
-import com.berg.base.xmlconfigure.typealiases.Employee;
+import com.berg.base.xmlconfigures.typealiases.Employee;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.TypeHandler;

@@ -1,9 +1,9 @@
-package com.berg.base.xmlconfigure.typealiases;
+package com.berg.base.xmlconfigures.typealiases;
 
 /**
- * 学生
+ * 员工
  */
-public class Student {
+public class Employee {
 
     private Long id;
 

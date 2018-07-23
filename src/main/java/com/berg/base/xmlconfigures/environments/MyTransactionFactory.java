@@ -1,4 +1,4 @@
-package com.berg.base.xmlconfigure.environments;
+package com.berg.base.xmlconfigures.environments;
 
 import org.apache.ibatis.session.TransactionIsolationLevel;
 import org.apache.ibatis.transaction.Transaction;

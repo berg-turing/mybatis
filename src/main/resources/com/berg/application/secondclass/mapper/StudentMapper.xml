@@ -65,6 +65,15 @@
         </if>
     </sql>
 
+    <sql id="ExtendsCondition">
+        <if test="departmentDto!=null">
+
+        </if>
+        <if test="departmentDto!=null and departmentDto.departmentId!=null and departmentDto.departmentId!=0">
+            AND ${prefixD}.DEPARTMENT_ID = #{departmentDto.departmentId}
+        </if>
+    </sql>
+
     <select id="select" resultMap="com.berg.application.secondclass.mapper.StudentMapper.BaseResultMap"
             parameterType="com.berg.application.secondclass.dto.StudentDto">
         SELECT
@@ -109,6 +118,7 @@
         <trim prefix="WHERE" prefixOverrides="AND |OR ">
             <include refid="com.berg.application.secondclass.mapper.StudentMapper.BaseCondition">
                 <property name="prefix" value="s"/>
+                <property name="prefixD" value="d"/>
             </include>
         </trim>
     </select>

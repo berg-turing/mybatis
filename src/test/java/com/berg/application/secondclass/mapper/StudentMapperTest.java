@@ -1,5 +1,6 @@
 package com.berg.application.secondclass.mapper;
 
+import com.berg.application.secondclass.dto.DepartmentDto;
 import com.berg.application.secondclass.dto.StudentDto;
 import com.berg.utils.OutputUtil;
 import org.apache.ibatis.io.Resources;
@@ -53,6 +54,11 @@ public class StudentMapperTest {
             StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
 
             StudentDto studentDto = new StudentDto();
+
+            DepartmentDto departmentDto = new DepartmentDto();
+            departmentDto.setDepartmentId(6L);
+
+            studentDto.setDepartmentDto(departmentDto);
 
             List<StudentDto> select = mapper.selectWithExtends(studentDto);
 

@@ -1,4 +1,4 @@
-package com.berg.base.xmlconfigure.objectfactory;
+package com.berg.base.xmlconfigures.objectfactory;
 
 import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
 

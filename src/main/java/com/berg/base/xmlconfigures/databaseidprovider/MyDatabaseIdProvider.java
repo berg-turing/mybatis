@@ -1,4 +1,4 @@
-package com.berg.base.xmlconfigure.databaseidprovider;
+package com.berg.base.xmlconfigures.databaseidprovider;
 
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 

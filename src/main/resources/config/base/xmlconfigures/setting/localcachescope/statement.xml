@@ -11,8 +11,8 @@
 
     <!-- 设置 -->
     <settings>
-        <!-- 全局地开启或关闭配置文件中的所有映射器已经配置的任何缓存 -->
-        <setting name="cacheEnabled" value="true" />
+        <!-- 一级缓存的范围 -->
+        <setting name="localCacheScope" value="STATEMENT"/>
 
         <!-- 允许 JDBC 支持自动生成主键,需要驱动兼容。
             如果设置为 true 则这个设置强制使用自动生成主键 -->
@@ -34,28 +34,6 @@
             NO_LOGGING -->
         <setting name="logImpl" value="STDOUT_LOGGING" />
     </settings>
-
-    <!-- 类型别名 -->
-    <typeAliases>
-        <package name="com.berg.base.xmlconfigures.typealiases" />
-    </typeAliases>
-
-    <!-- 类型处理器 -->
-    <typeHandlers>
-        <package name="com.berg.base.xmlconfigures.typehandler" />
-    </typeHandlers>
-
-    <!-- 对象工厂 -->
-    <objectFactory type="com.berg.base.xmlconfigures.objectfactory.MyObjectFactory">
-        <property name="someProperty" value="100" />
-    </objectFactory>
-
-    <!-- 插件 -->
-    <!--<plugins>-->
-        <!--<plugin interceptor="com.berg.base.xmlconfigure.plugins.MyPlugins">-->
-            <!--<property name="someProperty" value="100" />-->
-        <!--</plugin>-->
-    <!--</plugins>-->
 
     <!-- 环境配置 -->
     <environments default="development">
@@ -119,17 +97,8 @@
         </environment>
     </environments>
 
-    <!-- 数据库厂商标识 -->
-    <databaseIdProvider type="DB_VENDOR">
-        <property name="SQL Server" value="sqlserver"/>
-        <property name="DB2" value="db2"/>
-        <property name="Oracle" value="oracle" />
-    </databaseIdProvider>
-
     <!-- 映射器 -->
     <mappers>
-        <package name="com.berg.application.firstclass.mapper"/>
-        <package name="com.berg.application.secondclass.mapper"/>
-        <package name="com.berg.application.thirdclass.mapper"/>
+        <package name="com.berg.base.support.mapper"/>
     </mappers>
 </configuration>
