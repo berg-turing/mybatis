@@ -38,7 +38,7 @@ public class HobbyMapperTest {
 //            hobbyDto.setName("打");
             List<HobbyDto> select = mapper.select(hobbyDto);
 
-            OutputUtil.OutputList(select);
+            OutputUtil.outputlist(select);
         }finally {
             sqlSession.close();
         }

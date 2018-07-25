@@ -39,7 +39,7 @@ public class StudentHobbyMapperTest {
 //            studentHobbyDto.setHobbyId(1L);
             List<StudentHobbyDto> select = mapper.select(studentHobbyDto);
 
-            OutputUtil.OutputList(select);
+            OutputUtil.outputlist(select);
         }finally {
             sqlSession.close();
         }
@@ -60,7 +60,7 @@ public class StudentHobbyMapperTest {
 //            studentHobbyDto.setHobbyId(1L);
             List<StudentHobbyDto> select = mapper.selectWithExtends(studentHobbyDto);
 
-            OutputUtil.OutputList(select);
+            OutputUtil.outputlist(select);
         }finally {
             sqlSession.close();
         }

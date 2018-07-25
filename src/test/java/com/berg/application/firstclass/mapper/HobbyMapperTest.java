@@ -52,7 +52,7 @@ public class HobbyMapperTest {
 
             List<HobbyDto> hobbyDtos = mapper.selectMore(1L);
 
-            OutputUtil.OutputList(hobbyDtos);
+            OutputUtil.outputlist(hobbyDtos);
         }finally {
             sqlSession.close();
         }
@@ -72,7 +72,7 @@ public class HobbyMapperTest {
 //            hobbyDto.setName("打");
             List<HobbyDto> select = mapper.select(hobbyDto);
 
-            OutputUtil.OutputList(select);
+            OutputUtil.outputlist(select);
         }finally {
             sqlSession.close();
         }

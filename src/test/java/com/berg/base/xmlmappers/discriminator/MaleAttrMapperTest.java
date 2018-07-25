@@ -35,6 +35,6 @@ public class MaleAttrMapperTest {
 
         List<MaleAttr> maleAttrs = mapper.fineMore(1L);
 
-        OutputUtil.OutputList(maleAttrs);
+        OutputUtil.outputlist(maleAttrs);
     }
 }

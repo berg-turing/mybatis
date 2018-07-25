@@ -38,7 +38,7 @@ public class DepartmentMapperTest {
 //            departmentDto.setName("计算机");
             List<DepartmentDto> select = mapper.select(departmentDto);
 
-            OutputUtil.OutputList(select);
+            OutputUtil.outputlist(select);
         }finally {
             sqlSession.close();
         }

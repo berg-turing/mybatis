@@ -31,8 +31,8 @@ public class DynamicSqlTest {
         DepartmentDto departmentDto = new DepartmentDto();
         departmentDto.setDepartmentId(1L);
 
-        OutputUtil.OutputList(mapper.select(departmentDto));
+        OutputUtil.outputlist(mapper.select(departmentDto));
 
-        OutputUtil.OutputList(mapper.select(departmentDto));
+        OutputUtil.outputlist(mapper.select(departmentDto));
     }
 }

@@ -35,6 +35,6 @@ public class StudentMapperTest {
 
         List<BaseStudent> select = mapper.select(null);
 
-        OutputUtil.OutputList(select);
+        OutputUtil.outputlist(select);
     }
 }

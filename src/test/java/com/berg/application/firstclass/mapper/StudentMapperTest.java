@@ -54,7 +54,7 @@ public class StudentMapperTest {
 
             List<StudentDto> select = mapper.select(studentDto);
 
-            OutputUtil.OutputList(select);
+            OutputUtil.outputlist(select);
         }finally {
             sqlSession.close();
         }
@@ -73,7 +73,7 @@ public class StudentMapperTest {
 
             List<StudentDto> select = mapper.selectWithExtends(studentDto);
 
-            OutputUtil.OutputList(select);
+            OutputUtil.outputlist(select);
         }finally {
             sqlSession.close();
         }

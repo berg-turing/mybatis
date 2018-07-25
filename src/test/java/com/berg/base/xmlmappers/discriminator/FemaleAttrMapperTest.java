@@ -1,9 +1,7 @@
 package com.berg.base.xmlmappers.discriminator;
 
 import com.berg.base.xmlmappers.discriminator.dto.FemaleAttr;
-import com.berg.base.xmlmappers.discriminator.dto.MaleAttr;
 import com.berg.base.xmlmappers.discriminator.mapper.FemaleAttrMapper;
-import com.berg.base.xmlmappers.discriminator.mapper.MaleAttrMapper;
 import com.berg.utils.OutputUtil;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -37,6 +35,6 @@ public class FemaleAttrMapperTest {
 
         List<FemaleAttr> femaleAttrs = mapper.fineMore(2L);
 
-        OutputUtil.OutputList(femaleAttrs);
+        OutputUtil.outputlist(femaleAttrs);
     }
 }
