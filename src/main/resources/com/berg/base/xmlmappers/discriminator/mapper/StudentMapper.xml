@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.berg.base.xmlmappers.discriminator.mapper.StudentMapper">
+
+    <!-- 表名 -->
+    <sql id="TableName">
+        student
+    </sql>
+
+    <!-- 基本resultMap -->
+    <resultMap id="BaseResultMap" type="com.berg.base.xmlmappers.discriminator.dto.BaseStudent">
+        <id column="STUDENT_ID" property="studentId" jdbcType="BIGINT"/>
+        <result column="DEPARTMENT_ID" property="departmentId" jdbcType="BIGINT"/>
+        <result column="NUMBER" property="number" jdbcType="VARCHAR"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="BIRTHDAY" property="birthday" jdbcType="DATE"/>
+        <result column="SEX" property="sex" jdbcType="INTEGER"/>
+
+        <discriminator column="sex" javaType="int" jdbcType="INTEGER">
+            <case value="1" resultMap="MaleResultMap"/>
+            <case value="2" resultMap="FemaleResultMap"/>
+        </discriminator>
+    </resultMap>
+
+    <!-- 男学生resultMap -->
+    <resultMap id="MaleResultMap" type="com.berg.base.xmlmappers.discriminator.dto.MaleStudent"
+               extends="BaseResultMap">
+        <collection property="maleAttrList" column="student_id"
+                    ofType="com.berg.base.xmlmappers.discriminator.dto.MaleAttr"
+                    select="com.berg.base.xmlmappers.discriminator.mapper.MaleAttrMapper.fineMore"/>
+    </resultMap>
+
+    <!-- 女学生resultMap -->
+    <resultMap id="FemaleResultMap" type="com.berg.base.xmlmappers.discriminator.dto.FemaleStudent"
+               extends="BaseResultMap">
+        <collection property="femaleAttrList" column="student_id"
+                    ofType="com.berg.base.xmlmappers.discriminator.dto.FemaleAttr"
+                    select="com.berg.base.xmlmappers.discriminator.mapper.FemaleAttrMapper.fineMore"/>
+    </resultMap>
+
+    <!-- 基本sql字段 -->
+    <sql id="BaseSql">
+        ${prefix}.STUDENT_ID,
+        ${prefix}.DEPARTMENT_ID,
+        ${prefix}.NUMBER,
+        ${prefix}.NAME,
+        ${prefix}.BIRTHDAY,
+        ${prefix}.SEX
+    </sql>
+
+    <!-- 基本条件 -->
+    <sql id="BaseCondition">
+        <if test="studentId!=null and studentId!=0">
+            AND ${prefix}.STUDENT_ID = #{studentId}
+        </if>
+        <if test="departmentId!=null and departmentId!=0">
+            AND ${prefix}.DEPARTMENT_ID = #{departmentId}
+        </if>
+        <if test="number!=null and !number.equals('')">
+            AND ${prefix}.NUMBER like CONCAT('%', CONCAT(#{number, jdbcType=VARCHAR}, '%'))
+        </if>
+        <if test="name!=null and !name.equals('')">
+            AND ${prefix}.NAME like CONCAT('%', CONCAT(#{name, jdbcType=VARCHAR}, '%'))
+        </if>
+    </sql>
+
+    <!-- 条件查询 -->
+    <select id="select" parameterType="com.berg.base.xmlmappers.discriminator.dto.BaseStudent"
+            resultMap="BaseResultMap">
+        SELECT
+            <include refid="BaseSql">
+                <property name="prefix" value="s"/>
+            </include>
+        FROM <include refid="TableName"/> s
+
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <include refid="BaseCondition">
+                <property name="prefix" value="s"/>
+            </include>
+        </trim>
+    </select>
+</mapper>

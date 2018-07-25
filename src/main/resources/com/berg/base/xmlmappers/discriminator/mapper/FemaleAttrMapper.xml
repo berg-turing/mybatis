@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.berg.base.xmlmappers.discriminator.mapper.FemaleAttrMapper">
+
+    <sql id="TableName">
+        female_attr
+    </sql>
+
+    <resultMap id="BaseResultMap" type="com.berg.base.xmlmappers.discriminator.dto.FemaleAttr">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="studentId" column="student_id" jdbcType="BIGINT"/>
+        <result property="cosmetics" column="cosmetics" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="BaseSql">
+        ${prefix}.id,
+        ${prefix}.student_id,
+        ${prefix}.cosmetics
+    </sql>
+
+    <select id="fineMore" parameterType="long" resultMap="BaseResultMap">
+        SELECT
+            <include refid="BaseSql">
+                <property name="prefix" value="fa"/>
+            </include>
+        FROM <include refid="TableName"/> fa
+        WHERE
+        fa.student_id = #{studentId}
+    </select>
+</mapper>
