@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.berg.base.xmlmappers.insert.mapper.MaleAttrMapper">
+
+    <sql id="TableName">
+        male_attr
+    </sql>
+
+    <resultMap id="BaseResultMap" type="com.berg.base.xmlmappers.insert.dto.MaleAttr">
+        <id property="id" column="ID" jdbcType="BIGINT"/>
+        <result property="studentId" column="STUDENT_ID" jdbcType="BIGINT"/>
+        <result property="game" column="GAME" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="BaseSql">
+        ${prefix}.ID            ${suffix}ID,
+        ${prefix}.STUDENT_ID    ${suffix}STUDENT_ID,
+        ${prefix}.GAME          ${suffix}GAME
+    </sql>
+
+    <sql id="BaseCondition">
+        <if test="id!=null and id!=0">
+            AND ${prefix}.ID = #{id}
+        </if>
+        <if test="studentId!=null and studentId!=0">
+            AND ${prefix}.STUDENT_ID = #{studentId}
+        </if>
+        <if test="game!=null and !''.equals(game)">
+            AND ${prefix}.GAME like CONCAT('%', #{game, jdbcType=VARCHAR}, '%')
+        </if>
+    </sql>
+
+    <select id="select" parameterType="com.berg.base.xmlmappers.insert.dto.MaleAttr"
+            resultMap="BaseResultMap">
+
+        SELECT
+        <include refid="BaseSql">
+            <property name="prefix" value="ma"/>
+            <property name="suffix" value=" "/>
+        </include>
+        FROM <include refid="TableName"/> ma
+
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <include refid="BaseCondition">
+                <property name="prefix" value="ma"/>
+            </include>
+        </trim>
+    </select>
+
+    <insert id="insert" parameterType="com.berg.base.xmlmappers.insert.dto.MaleAttr">
+        INSERT INTO
+            <include refid="TableName"/>
+        (STUDENT_ID, GAME)
+        VALUES
+        (#{studentId}, #{game})
+    </insert>
+
+    <insert id="insertBack" parameterType="com.berg.base.xmlmappers.insert.dto.MaleAttr"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+        INSERT INTO
+        <include refid="TableName"/>
+        (ID, STUDENT_ID, GAME)
+        VALUES
+        (#{id}, #{studentId}, #{game})
+    </insert>
+
+    <insert id="insertSelect" parameterType="com.berg.base.xmlmappers.insert.dto.MaleAttr">
+        INSERT INTO
+        <include refid="TableName"/>
+        (
+        <trim suffixOverrides=",">
+            <if test="studentId!=null and studentId!=0">
+                STUDENT_ID,
+            </if>
+            <if test="game!=null and !''.equals(game)">
+                GAME
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="studentId!=null and studentId!=0">
+                #{studentId},
+            </if>
+            <if test="game!=null and !''.equals(game)">
+                #{game}
+            </if>
+        </trim>
+        )
+    </insert>
+
+    <insert id="insertSelectBack" parameterType="com.berg.base.xmlmappers.insert.dto.MaleAttr"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+        INSERT INTO
+        <include refid="TableName"/>
+        (
+        <trim suffixOverrides=",">
+            <if test="studentId!=null and studentId!=0">
+                STUDENT_ID,
+            </if>
+            <if test="game!=null and !''.equals(game)">
+                GAME
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="studentId!=null and studentId!=0">
+                #{studentId},
+            </if>
+            <if test="game!=null and !''.equals(game)">
+                #{game}
+            </if>
+        </trim>
+        )
+    </insert>
+
+    <insert id="insertSelectBackUseSelectKey" parameterType="com.berg.base.xmlmappers.insert.dto.MaleAttr">
+
+        <selectKey keyProperty="id" keyColumn="ID" resultType="long" order="BEFORE">
+            SELECT if(max(ID) IS NULL, 1, max(ID)+1) NEW_ID FROM <include refid="TableName"/>
+        </selectKey>
+
+        INSERT INTO
+        <include refid="TableName"/>
+        (
+        <trim suffixOverrides=",">
+            <if test="studentId!=null and studentId!=0">
+                STUDENT_ID,
+            </if>
+            <if test="game!=null and !''.equals(game)">
+                GAME
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="studentId!=null and studentId!=0">
+                #{studentId},
+            </if>
+            <if test="game!=null and !''.equals(game)">
+                #{game}
+            </if>
+        </trim>
+        )
+    </insert>
+
+</mapper>

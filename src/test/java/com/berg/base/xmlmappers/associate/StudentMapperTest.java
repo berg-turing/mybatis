@@ -7,6 +7,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,6 +37,8 @@ public class StudentMapperTest {
         List<Student> select = mapper.selectAssociateBySelect(null);
 
         OutputUtil.outputlist(select);
+
+        sqlSession.close();
     }
 
     @Test
@@ -48,5 +51,7 @@ public class StudentMapperTest {
         List<Student> select = mapper.selectAssociateByResultMap(null);
 
         OutputUtil.outputlist(select);
+
+        sqlSession.close();
     }
 }

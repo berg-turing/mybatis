@@ -34,5 +34,7 @@ public class DepartmentMapperTest {
         Department department = mapper.selectOne(1L);
 
         System.out.println(department);
+
+        sqlSession.close();
     }
 }

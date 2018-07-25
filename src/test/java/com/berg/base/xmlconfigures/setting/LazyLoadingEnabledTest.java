@@ -54,6 +54,8 @@ public class LazyLoadingEnabledTest {
 
             System.out.println(dto.getHobbyDtos());
         }
+
+        sqlSession.close();
     }
 
     /**
@@ -89,5 +91,7 @@ public class LazyLoadingEnabledTest {
 
             System.out.println(dto.getHobbyDtos());
         }
+
+        sqlSession.close();
     }
 }

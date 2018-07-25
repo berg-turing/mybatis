@@ -76,6 +76,9 @@ public class LocalCacheScopeTest {
         System.out.println("第二次查询：");
         //查询两次
         System.out.println(mapper22.selectOne(1L));
+
+        sqlSession1.close();
+        sqlSession2.close();
     }
 
     /**
@@ -138,5 +141,8 @@ public class LocalCacheScopeTest {
         System.out.println("第二次查询：");
         //查询两次
         System.out.println(mapper22.selectOne(2L));
+
+        sqlSession1.close();
+        sqlSession2.close();
     }
 }

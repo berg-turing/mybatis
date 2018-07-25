@@ -36,6 +36,8 @@ public class StudentMapperTest {
         List<BaseStudent> select = mapper.selectDiscriminatorBySelect(null);
 
         OutputUtil.outputlist(select);
+
+        sqlSession.close();
     }
 
     @Test
@@ -48,5 +50,7 @@ public class StudentMapperTest {
         List<BaseStudent> select = mapper.selectDiscriminatorByResultMap(null);
 
         OutputUtil.outputlist(select);
+
+        sqlSession.close();
     }
 }

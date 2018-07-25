@@ -36,6 +36,8 @@ public class MaleStudentMapperTest {
         List<Malestudent> select = mapper.selectCollectionBySelect(null);
 
         OutputUtil.outputlist(select);
+
+        sqlSession.close();
     }
 
     @Test
@@ -48,5 +50,7 @@ public class MaleStudentMapperTest {
         List<Malestudent> select = mapper.selectCollectionByResultMap(null);
 
         OutputUtil.outputlist(select);
+
+        sqlSession.close();
     }
 }

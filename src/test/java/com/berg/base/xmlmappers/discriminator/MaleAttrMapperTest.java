@@ -36,5 +36,7 @@ public class MaleAttrMapperTest {
         List<MaleAttr> maleAttrs = mapper.fineMore(1L);
 
         OutputUtil.outputlist(maleAttrs);
+
+        sqlSession.close();
     }
 }

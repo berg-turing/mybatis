@@ -34,5 +34,7 @@ public class DynamicSqlTest {
         OutputUtil.outputlist(mapper.select(departmentDto));
 
         OutputUtil.outputlist(mapper.select(departmentDto));
+
+        sqlSession.close();
     }
 }
