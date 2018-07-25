@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.berg.base.xmlmappers.associate.mapper.DepartmentMapper">
+
+    <sql id="TableName">
+        department
+    </sql>
+
+    <!-- 基本映射结果 -->
+    <resultMap id="BaseResultMap" type="com.berg.base.xmlmappers.associate.dto.Department">
+        <id column="DEPARTMENT_ID" property="departmentId" jdbcType="BIGINT"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 基本属性 -->
+    <sql id="BaseSql">
+        ${prefix}.DEPARTMENT_ID,
+        ${prefix}.NAME
+    </sql>
+
+    <select id="selectOne" resultMap="BaseResultMap"
+            parameterType="long">
+        SELECT
+        <include refid="BaseSql">
+            <property name="prefix" value="d"/>
+        </include>
+
+        FROM
+        <include refid="TableName"/> d
+
+        WHERE
+        d.DEPARTMENT_ID = #{departmentId}
+    </select>
+
+</mapper>
