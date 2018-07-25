@@ -27,7 +27,7 @@
         <if test="studentId!=null and studentId!=0">
             AND ${prefix}.STUDENT_ID = #{studentId}
         </if>
-        <if test="game!=null and !''.equals(game)">
+        <if test="game!=null and !game.equals('')">
             AND ${prefix}.GAME like CONCAT('%', #{game, jdbcType=VARCHAR}, '%')
         </if>
     </sql>
