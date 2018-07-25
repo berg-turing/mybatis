@@ -27,13 +27,25 @@ public class StudentMapperTest {
     }
 
     @Test
-    public void testSelect(){
+    public void testSelectDiscriminatorBySelect(){
 
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
         StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
 
-        List<BaseStudent> select = mapper.select(null);
+        List<BaseStudent> select = mapper.selectDiscriminatorBySelect(null);
+
+        OutputUtil.outputlist(select);
+    }
+
+    @Test
+    public void testSelectDiscriminatorByResultMap(){
+
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
+
+        List<BaseStudent> select = mapper.selectDiscriminatorByResultMap(null);
 
         OutputUtil.outputlist(select);
     }

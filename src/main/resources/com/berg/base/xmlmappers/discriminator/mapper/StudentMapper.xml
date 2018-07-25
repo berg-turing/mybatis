@@ -17,37 +17,70 @@
         <result column="NAME" property="name" jdbcType="VARCHAR"/>
         <result column="BIRTHDAY" property="birthday" jdbcType="DATE"/>
         <result column="SEX" property="sex" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <!-- 使用select的resultMap -->
+    <resultMap id="BySelectResultMap" type="com.berg.base.xmlmappers.discriminator.dto.BaseStudent"
+               extends="BaseResultMap">
 
         <discriminator column="sex" javaType="int" jdbcType="INTEGER">
-            <case value="1" resultMap="MaleResultMap"/>
-            <case value="2" resultMap="FemaleResultMap"/>
+            <case value="1" resultMap="BySelectMaleResultMap"/>
+            <case value="2" resultMap="BySelectFemaleResultMap"/>
         </discriminator>
     </resultMap>
 
-    <!-- 男学生resultMap -->
-    <resultMap id="MaleResultMap" type="com.berg.base.xmlmappers.discriminator.dto.MaleStudent"
+    <!-- 使用select方式的男学生resultMap -->
+    <resultMap id="BySelectMaleResultMap" type="com.berg.base.xmlmappers.discriminator.dto.MaleStudent"
                extends="BaseResultMap">
+
         <collection property="maleAttrList" column="student_id"
-                    ofType="com.berg.base.xmlmappers.discriminator.dto.MaleAttr"
                     select="com.berg.base.xmlmappers.discriminator.mapper.MaleAttrMapper.fineMore"/>
     </resultMap>
 
-    <!-- 女学生resultMap -->
-    <resultMap id="FemaleResultMap" type="com.berg.base.xmlmappers.discriminator.dto.FemaleStudent"
+    <!-- 使用select方式的女学生resultMap -->
+    <resultMap id="BySelectFemaleResultMap" type="com.berg.base.xmlmappers.discriminator.dto.FemaleStudent"
                extends="BaseResultMap">
+
         <collection property="femaleAttrList" column="student_id"
-                    ofType="com.berg.base.xmlmappers.discriminator.dto.FemaleAttr"
                     select="com.berg.base.xmlmappers.discriminator.mapper.FemaleAttrMapper.fineMore"/>
+    </resultMap>
+
+
+    <!-- 使用resultMap的resultMap -->
+    <resultMap id="ByResultMapResultMap" type="com.berg.base.xmlmappers.discriminator.dto.BaseStudent"
+               extends="BaseResultMap">
+
+        <discriminator column="sex" javaType="int" jdbcType="INTEGER">
+            <case value="1" resultMap="ByResultMapMaleResultMap"/>
+            <case value="2" resultMap="ByResultMapFemaleResultMap"/>
+        </discriminator>
+    </resultMap>
+
+    <!-- 使用resultMap方式的男学生resultMap -->
+    <resultMap id="ByResultMapMaleResultMap" type="com.berg.base.xmlmappers.discriminator.dto.MaleStudent"
+               extends="BaseResultMap">
+
+        <collection property="maleAttrList" column="student_id" columnPrefix="ma"
+                    resultMap="com.berg.base.xmlmappers.discriminator.mapper.MaleAttrMapper.BaseResultMap"/>
+    </resultMap>
+
+    <!-- 使用resultMap方式的女学生resultMap -->
+    <resultMap id="ByResultMapFemaleResultMap" type="com.berg.base.xmlmappers.discriminator.dto.FemaleStudent"
+               extends="BaseResultMap">
+
+        <collection property="femaleAttrList" column="student_id" columnPrefix="fa"
+                    resultMap="com.berg.base.xmlmappers.discriminator.mapper.FemaleAttrMapper.BaseResultMap"/>
     </resultMap>
 
     <!-- 基本sql字段 -->
     <sql id="BaseSql">
-        ${prefix}.STUDENT_ID,
-        ${prefix}.DEPARTMENT_ID,
-        ${prefix}.NUMBER,
-        ${prefix}.NAME,
-        ${prefix}.BIRTHDAY,
-        ${prefix}.SEX
+        ${prefix}.STUDENT_ID       ${suffix}STUDENT_ID,
+        ${prefix}.DEPARTMENT_ID    ${suffix}DEPARTMENT_ID,
+        ${prefix}.NUMBER           ${suffix}NUMBER,
+        ${prefix}.NAME             ${suffix}NAME,
+        ${prefix}.BIRTHDAY         ${suffix}BIRTHDAY,
+        ${prefix}.SEX              ${suffix}SEX
     </sql>
 
     <!-- 基本条件 -->
@@ -70,13 +103,43 @@
     </sql>
 
     <!-- 条件查询 -->
-    <select id="select" parameterType="com.berg.base.xmlmappers.discriminator.dto.BaseStudent"
-            resultMap="BaseResultMap">
+    <select id="selectDiscriminatorBySelect" parameterType="com.berg.base.xmlmappers.discriminator.dto.BaseStudent"
+            resultMap="BySelectResultMap">
         SELECT
             <include refid="BaseSql">
                 <property name="prefix" value="s"/>
+                <property name="suffix" value=" "/>
             </include>
         FROM <include refid="TableName"/> s
+
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <include refid="BaseCondition">
+                <property name="prefix" value="s"/>
+            </include>
+        </trim>
+    </select>
+
+    <!-- 条件查询 -->
+    <select id="selectDiscriminatorByResultMap" parameterType="com.berg.base.xmlmappers.discriminator.dto.BaseStudent"
+            resultMap="ByResultMapResultMap">
+        SELECT
+            <include refid="BaseSql">
+                <property name="prefix" value="s"/>
+                <property name="suffix" value=" "/>
+            </include>,
+            <include refid="com.berg.base.xmlmappers.discriminator.mapper.MaleAttrMapper.BaseSql">
+                <property name="prefix" value="ma"/>
+                <property name="suffix" value="ma"/>
+            </include>,
+            <include refid="com.berg.base.xmlmappers.discriminator.mapper.FemaleAttrMapper.BaseSql">
+                <property name="prefix" value="fa"/>
+                <property name="suffix" value="fa"/>
+            </include>
+        FROM <include refid="TableName"/> s
+        LEFT JOIN <include refid="com.berg.base.xmlmappers.discriminator.mapper.MaleAttrMapper.TableName"/> ma
+        ON s.STUDENT_ID = ma.STUDENT_ID
+        LEFT JOIN <include refid="com.berg.base.xmlmappers.discriminator.mapper.FemaleAttrMapper.TableName"/> fa
+        ON s.STUDENT_ID = fa.STUDENT_ID
 
         <trim prefix="WHERE" prefixOverrides="AND |OR ">
             <include refid="BaseCondition">

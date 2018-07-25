@@ -16,19 +16,32 @@
         <result column="NAME" property="name" jdbcType="VARCHAR"/>
         <result column="BIRTHDAY" property="birthday" jdbcType="DATE"/>
         <result column="SEX" property="sex" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 通过select使用resultMap -->
+    <resultMap id="BySelectResultMap" type="com.berg.base.xmlmappers.associate.dto.Student"
+               extends="BaseResultMap">
 
         <association property="department" column="DEPARTMENT_ID"
                      select="com.berg.base.xmlmappers.associate.mapper.DepartmentMapper.selectOne"/>
     </resultMap>
 
+    <!-- 通过resultMap使用resultMap -->
+    <resultMap id="ByResultMapResultMap" type="com.berg.base.xmlmappers.associate.dto.Student"
+               extends="BaseResultMap">
+
+        <association property="department" column="DEPARTMENT_ID" columnPrefix="d"
+                     resultMap="com.berg.base.xmlmappers.associate.mapper.DepartmentMapper.BaseResultMap"/>
+    </resultMap>
+
     <!-- 基本属性 -->
     <sql id="BaseSql">
-        ${prefix}.STUDENT_ID,
-        ${prefix}.DEPARTMENT_ID,
-        ${prefix}.NUMBER,
-        ${prefix}.NAME,
-        ${prefix}.BIRTHDAY,
-        ${prefix}.SEX
+        ${prefix}.STUDENT_ID        ${suffix}STUDENT_ID,
+        ${prefix}.DEPARTMENT_ID     ${suffix}DEPARTMENT_ID,
+        ${prefix}.NUMBER            ${suffix}NUMBER,
+        ${prefix}.NAME              ${suffix}NAME,
+        ${prefix}.BIRTHDAY          ${suffix}BIRTHDAY,
+        ${prefix}.SEX               ${suffix}SEX
     </sql>
 
     <!-- 基本条件 -->
@@ -50,15 +63,38 @@
         </if>
     </sql>
 
-    <select id="select" resultMap="BaseResultMap"
+    <select id="selectAssociateBySelect" resultMap="BySelectResultMap"
             parameterType="com.berg.base.xmlmappers.associate.dto.Student">
         SELECT
         <include refid="BaseSql">
             <property name="prefix" value="s"/>
+            <property name="suffix" value=" "/>
         </include>
 
         FROM
         <include refid="TableName"/> s
+
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <include refid="BaseCondition">
+                <property name="prefix" value="s"/>
+            </include>
+        </trim>
+    </select>
+
+    <select id="selectAssociateByResultMap" resultMap="ByResultMapResultMap"
+            parameterType="com.berg.base.xmlmappers.associate.dto.Student">
+        SELECT
+            <include refid="BaseSql">
+                <property name="prefix" value="s"/>
+                <property name="suffix" value=" "/>
+            </include>,
+            <include refid="com.berg.base.xmlmappers.associate.mapper.DepartmentMapper.BaseSql">
+                <property name="prefix" value="d"/>
+                <property name="suffix" value="d"/>
+            </include>
+        FROM <include refid="TableName"/> s
+        LEFT JOIN <include refid="com.berg.base.xmlmappers.associate.mapper.DepartmentMapper.TableName"/> d
+        ON s.DEPARTMENT_ID = d.DEPARTMENT_ID
 
         <trim prefix="WHERE" prefixOverrides="AND |OR ">
             <include refid="BaseCondition">
