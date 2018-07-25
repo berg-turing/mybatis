@@ -16,8 +16,8 @@
 
     <!-- 基本属性 -->
     <sql id="BaseSql">
-        ${prefix}.DEPARTMENT_ID,
-        ${prefix}.NAME
+        ${prefix}.DEPARTMENT_ID         ${suffix}DEPARTMENT_ID,
+        ${prefix}.NAME                  ${suffix}NAME
     </sql>
 
     <select id="selectOne" resultMap="BaseResultMap"
@@ -25,6 +25,7 @@
         SELECT
         <include refid="BaseSql">
             <property name="prefix" value="d"/>
+            <property name="suffix" value=" "/>
         </include>
 
         FROM

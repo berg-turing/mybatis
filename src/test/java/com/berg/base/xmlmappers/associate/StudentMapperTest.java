@@ -27,13 +27,25 @@ public class StudentMapperTest {
     }
 
     @Test
-    public void testSelect(){
+    public void testSelectAssociateBySelect(){
 
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
         StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
 
-        List<Student> select = mapper.select(null);
+        List<Student> select = mapper.selectAssociateBySelect(null);
+
+        OutputUtil.outputlist(select);
+    }
+
+    @Test
+    public void testSelectAssociateByResultMap(){
+
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
+
+        List<Student> select = mapper.selectAssociateByResultMap(null);
 
         OutputUtil.outputlist(select);
     }

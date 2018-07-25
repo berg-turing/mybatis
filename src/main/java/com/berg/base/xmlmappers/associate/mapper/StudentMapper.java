@@ -12,5 +12,13 @@ public interface StudentMapper {
      * @param student    查询条件
      * @return              满足条件的学生对象
      */
-    List<Student> select(Student student);
+    List<Student> selectAssociateBySelect(Student student);
+
+    /**
+     * 查找满足条件的学生对象
+     *
+     * @param student    查询条件
+     * @return              满足条件的学生对象
+     */
+    List<Student> selectAssociateByResultMap(Student student);
 }

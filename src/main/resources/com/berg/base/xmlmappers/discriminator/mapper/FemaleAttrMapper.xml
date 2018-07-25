@@ -9,24 +9,25 @@
     </sql>
 
     <resultMap id="BaseResultMap" type="com.berg.base.xmlmappers.discriminator.dto.FemaleAttr">
-        <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="studentId" column="student_id" jdbcType="BIGINT"/>
-        <result property="cosmetics" column="cosmetics" jdbcType="VARCHAR"/>
+        <id property="id" column="ID" jdbcType="BIGINT"/>
+        <result property="studentId" column="STUDENT_ID" jdbcType="BIGINT"/>
+        <result property="cosmetics" column="COSMETICS" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="BaseSql">
-        ${prefix}.id,
-        ${prefix}.student_id,
-        ${prefix}.cosmetics
+        ${prefix}.ID            ${suffix}ID,
+        ${prefix}.STUDENT_ID    ${suffix}STUDENT_ID,
+        ${prefix}.COSMETICS     ${suffix}COSMETICS
     </sql>
 
     <select id="fineMore" parameterType="long" resultMap="BaseResultMap">
         SELECT
             <include refid="BaseSql">
                 <property name="prefix" value="fa"/>
+                <property name="suffix" value=" "/>
             </include>
         FROM <include refid="TableName"/> fa
         WHERE
-        fa.student_id = #{studentId}
+        fa.STUDENT_ID = #{studentId}
     </select>
 </mapper>

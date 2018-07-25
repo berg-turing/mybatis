@@ -12,5 +12,13 @@ public interface MaleStudentMapper {
      * @param malestudent   查询条件
      * @return              满足条件的学生对象
      */
-    List<Malestudent> select(Malestudent malestudent);
+    List<Malestudent> selectCollectionBySelect(Malestudent malestudent);
+
+    /**
+     * 查找满足条件的学生对象
+     *
+     * @param malestudent   查询条件
+     * @return              满足条件的学生对象
+     */
+    List<Malestudent> selectCollectionByResultMap(Malestudent malestudent);
 }
