@@ -19,7 +19,7 @@ public class StudentHobbyMapperTest {
 
     @Before
     public void before() throws IOException {
-        String resource = "mybatis-config.xml";
+        String resource = "config/application/thiredclass/mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
 
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);

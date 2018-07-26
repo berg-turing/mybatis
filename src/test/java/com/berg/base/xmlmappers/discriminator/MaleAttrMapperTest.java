@@ -20,7 +20,7 @@ public class MaleAttrMapperTest {
 
     @Before
     public void before() throws IOException {
-        String resource = "config/base/xmlmappers/discriminator/mybatis.xml";
+        String resource = "config/base/xmlmappers/discriminator/mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
 
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);

@@ -22,7 +22,7 @@ public class DynamicSqlTest {
         SqlSessionFactory sqlSessionFactory =
                 new SqlSessionFactoryBuilder()
                         .build(Resources
-                                .getResourceAsStream("config/base/xmlmappers/select/dynamicsql.xml"));
+                                .getResourceAsStream("config/base/xmlmappers/select/mybatis-config.xml"));
 
         SqlSession sqlSession = sqlSessionFactory.openSession();
 

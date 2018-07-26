@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.berg.base.xmlmappers.delete.mapper.MaleAttrMapper">
+
+    <sql id="TableName">
+        male_attr
+    </sql>
+
+    <resultMap id="BaseResultMap" type="com.berg.base.xmlmappers.delete.dto.MaleAttr">
+        <id property="id" column="ID" jdbcType="BIGINT"/>
+        <result property="studentId" column="STUDENT_ID" jdbcType="BIGINT"/>
+        <result property="game" column="GAME" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="BaseSql">
+        ${prefix}.ID            ${suffix}ID,
+        ${prefix}.STUDENT_ID    ${suffix}STUDENT_ID,
+        ${prefix}.GAME          ${suffix}GAME
+    </sql>
+
+    <sql id="BaseCondition">
+        <if test="id!=null and id!=0">
+            AND ${prefix}.ID = #{id}
+        </if>
+        <if test="studentId!=null and studentId!=0">
+            AND ${prefix}.STUDENT_ID = #{studentId}
+        </if>
+        <if test="game!=null and !game.equals('')">
+            AND ${prefix}.GAME like CONCAT('%', #{game, jdbcType=VARCHAR}, '%')
+        </if>
+    </sql>
+
+    <select id="select" parameterType="com.berg.base.xmlmappers.delete.dto.MaleAttr"
+            resultMap="BaseResultMap">
+
+        SELECT
+        <include refid="BaseSql">
+            <property name="prefix" value="ma"/>
+            <property name="suffix" value=" "/>
+        </include>
+        FROM <include refid="TableName"/> ma
+
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <include refid="BaseCondition">
+                <property name="prefix" value="ma"/>
+            </include>
+        </trim>
+    </select>
+
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM <include refid="TableName"/>
+        WHERE ID = #{id}
+    </delete>
+
+    <delete id="deleteByCondition" parameterType="com.berg.base.xmlmappers.delete.dto.MaleAttr">
+        DELETE FROM <include refid="TableName"/>
+        <where>
+            <if test="id!=null and id!=0">
+                ID = #{id}
+            </if>
+            <if test="studentId!=null and studentId!=0">
+                AND STUDENT_ID = #{studentId}
+            </if>
+            <if test="game!=null and !game.equals('')">
+                AND GAME = #{game}
+            </if>
+        </where>
+    </delete>
+</mapper>

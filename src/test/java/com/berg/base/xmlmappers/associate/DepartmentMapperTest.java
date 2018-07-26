@@ -18,7 +18,7 @@ public class DepartmentMapperTest {
 
     @Before
     public void before() throws IOException {
-        String resource = "config/base/xmlmappers/associate/mybatis.xml";
+        String resource = "config/base/xmlmappers/associate/mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
 
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);

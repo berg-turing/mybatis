@@ -26,7 +26,7 @@ public class MaleAttrMapperTest {
 
     @Before
     public void before() throws IOException {
-        String resource = "config/base/xmlmappers/insert/mybatis.xml";
+        String resource = "config/base/xmlmappers/insert/mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
 
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
