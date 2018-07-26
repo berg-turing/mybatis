@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `mybatis` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `mybatis`;
 -- MySQL dump 10.13  Distrib 5.7.22, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: mybatis
@@ -25,9 +23,9 @@ DROP TABLE IF EXISTS `department`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `department` (
-    `department_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '院系id',
-    `name` varchar(64) NOT NULL COMMENT '院系名称',
-    PRIMARY KEY (`department_id`)
+  `department_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '院系id',
+  `name` varchar(64) NOT NULL COMMENT '院系名称',
+  PRIMARY KEY (`department_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -42,6 +40,31 @@ INSERT INTO `department` VALUES (1,'计算机科学学院'),(2,'石油工程学�
 UNLOCK TABLES;
 
 --
+-- Table structure for table `female_attr`
+--
+
+DROP TABLE IF EXISTS `female_attr`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `female_attr` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `cosmetics` varchar(50) DEFAULT '神仙水' COMMENT '化妆品',
+  `student_id` bigint(20) NOT NULL COMMENT '学生id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='女生的特性';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `female_attr`
+--
+
+LOCK TABLES `female_attr` WRITE;
+/*!40000 ALTER TABLE `female_attr` DISABLE KEYS */;
+INSERT INTO `female_attr` VALUES (1,'神仙水',2);
+/*!40000 ALTER TABLE `female_attr` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `hobby`
 --
 
@@ -49,9 +72,9 @@ DROP TABLE IF EXISTS `hobby`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `hobby` (
-    `hobby_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '爱好id',
-    `name` varchar(20) NOT NULL COMMENT '爱好名称',
-    PRIMARY KEY (`hobby_id`)
+  `hobby_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '爱好id',
+  `name` varchar(20) NOT NULL COMMENT '爱好名称',
+  PRIMARY KEY (`hobby_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='爱好';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -66,6 +89,31 @@ INSERT INTO `hobby` VALUES (1,'打篮球'),(2,'打羽毛球'),(3,'打乒乓球')
 UNLOCK TABLES;
 
 --
+-- Table structure for table `male_attr`
+--
+
+DROP TABLE IF EXISTS `male_attr`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `male_attr` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `game` varchar(50) DEFAULT '英雄联盟' COMMENT '游戏',
+  `student_id` bigint(20) NOT NULL COMMENT '学生id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COMMENT='男生的特性';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `male_attr`
+--
+
+LOCK TABLES `male_attr` WRITE;
+/*!40000 ALTER TABLE `male_attr` DISABLE KEYS */;
+INSERT INTO `male_attr` VALUES (1,'英雄联盟',1);
+/*!40000 ALTER TABLE `male_attr` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `student`
 --
 
@@ -73,12 +121,13 @@ DROP TABLE IF EXISTS `student`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `student` (
-    `student_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `department_id` int(11) NOT NULL,
-    `number` varchar(20) NOT NULL COMMENT '学号',
-    `name` varchar(20) NOT NULL COMMENT '姓名',
-    `birthday` date NOT NULL COMMENT '生日',
-    PRIMARY KEY (`student_id`)
+  `student_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `department_id` int(11) NOT NULL,
+  `number` varchar(20) NOT NULL COMMENT '学号',
+  `name` varchar(20) NOT NULL COMMENT '姓名',
+  `birthday` date NOT NULL COMMENT '生日',
+  `sex` int(11) NOT NULL DEFAULT '1' COMMENT '性别：1-男;2-女',
+  PRIMARY KEY (`student_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='学生表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -88,7 +137,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (1,1,'201801001','张一','1996-01-01'),(2,1,'201801002','张二','1996-01-02'),(3,1,'201801003','张三','1996-01-03'),(4,1,'201801004','张四','1996-01-04'),(5,2,'201802001','李一','1996-02-01'),(6,2,'201802002','李二','1996-02-02'),(7,2,'201802003','李三','1996-02-03'),(8,2,'201802004','李四','1996-02-04'),(9,3,'201803001','王一','1996-03-01'),(10,3,'201803002','王二','1996-03-02'),(11,3,'201803003','王三','1996-03-03'),(12,3,'201803004','王四','1996-03-04'),(13,4,'201804001','吴一','1996-04-01'),(14,4,'201804002','吴二','1996-04-02'),(15,4,'201804003','吴三','1996-04-03'),(16,4,'201804004','吴四','1996-04-04'),(17,5,'201805001','孙一','1996-05-01'),(18,5,'201805002','孙二','1996-05-02'),(19,5,'201805003','孙三','1996-05-03'),(20,5,'201805004','孙四','1996-05-04');
+INSERT INTO `student` VALUES (1,1,'201801001','张一','1996-01-01',1),(2,1,'201801002','张二','1996-01-02',2),(3,1,'201801003','张三','1996-01-03',1),(4,1,'201801004','张四','1996-01-04',1),(5,2,'201802001','李一','1996-02-01',1),(6,2,'201802002','李二','1996-02-02',1),(7,2,'201802003','李三','1996-02-03',1),(8,2,'201802004','李四','1996-02-04',1),(9,3,'201803001','王一','1996-03-01',1),(10,3,'201803002','王二','1996-03-02',1),(11,3,'201803003','王三','1996-03-03',1),(12,3,'201803004','王四','1996-03-04',1),(13,4,'201804001','吴一','1996-04-01',1),(14,4,'201804002','吴二','1996-04-02',1),(15,4,'201804003','吴三','1996-04-03',1),(16,4,'201804004','吴四','1996-04-04',1),(17,5,'201805001','孙一','1996-05-01',1),(18,5,'201805002','孙二','1996-05-02',1),(19,5,'201805003','孙三','1996-05-03',1),(20,5,'201805004','孙四','1996-05-04',1);
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -100,10 +149,10 @@ DROP TABLE IF EXISTS `student_hobby`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `student_hobby` (
-    `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `student_id` int(11) NOT NULL COMMENT '学生id',
-    `hobby_id` int(11) NOT NULL COMMENT '爱好id',
-    PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `student_id` int(11) NOT NULL COMMENT '学生id',
+  `hobby_id` int(11) NOT NULL COMMENT '爱好id',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8 COMMENT='学生与爱好的映射表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -126,4 +175,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-08 11:17:00
+-- Dump completed on 2018-07-26 11:38:18
