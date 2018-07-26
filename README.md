@@ -23,6 +23,7 @@
        |-java .............................................. 项目测试相关代码
    
 ```
+ 
   
 main中的代码提供了基本的功能与类的支持，所有的效果都在test里测试得到。  
 
@@ -30,3 +31,21 @@ main中的代码提供了基本的功能与类的支持，所有的效果都在t
 其中，在firstclass包下是最规范的写法，但是存在N+1的问题;  
 在secondclass包下是较为中正的写法，但是过于繁琐，不存在N+1的问题;  
 在thirdclass包下是最简洁的写法，不存在N+1的问题，但是不够规范;  
+
+
+对该项目感兴趣的同学可以直接使用  
+```
+git clone https://github.com/berg-turing/mybatis.git
+```
+![](https://github.com/berg-turing/mybatis/master/source/image/git_clone.png)
+
+方式将代码克隆到本地，然后使用相关的IDE打开项目，我使用的是IDEA。 
+
+
+下面以IDEA为基础，简要介绍如何启用该项目：
+
+在项目路径下执行  
+```
+mvn clean install -Dmaven.test.skip=true
+```
+项目将引入mybatis、junit和mysql的依赖
