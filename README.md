@@ -46,17 +46,21 @@ git clone https://github.com/berg-turing/mybatis.git
 下面以IDEA为基础，简要介绍如何启用该项目： 
 
 环境依赖  
+```
 项目开发工具：IntelliJ IDEA  
 项目管理工具：maven  
 版本控制工具：git  
 数据库：mysql  
+```
 
 将代码克隆到本地之后，可以直接使用IDEA打开项目  
 ![](https://github.com/berg-turing/mybatis/raw/master/source/image/idea_index.png)
 
+选择项目文件所在的pom.xml  
 
 ![](https://github.com/berg-turing/mybatis/raw/master/source/image/idea_openproject.png)
 
+使用作为一个项目(Open as Project)打开  
 
 ![](https://github.com/berg-turing/mybatis/raw/master/source/image/idea_asproject.png)
 
