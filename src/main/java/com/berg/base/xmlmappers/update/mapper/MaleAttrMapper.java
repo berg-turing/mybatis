@@ -18,9 +18,17 @@ public interface MaleAttrMapper {
     /**
      * 更新数据
      *
-     * @param id            主键
      * @param maleAttr      需要更新的数据
      * @return              更新结果
      */
-    int updateById(@Param("id") Long id,  MaleAttr maleAttr);
+    int updateById(MaleAttr maleAttr);
+
+    /**
+     * 条件更新
+     *
+     * @param maleAttr      更新到的数据
+     * @param condition     更新的查询条件
+     * @return              影响结果
+     */
+    int updateByCondition(@Param("maleAttr") MaleAttr maleAttr, @Param("condition") MaleAttr condition);
 }

@@ -12,11 +12,17 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class MaleAttrMapperTest {
 
     private SqlSessionFactory sqlSessionFactory = null;
+
+    private Random random = new Random(new Date().getTime());
+
+    private static final Integer MAX_STUDENT_ID_ = 19;
 
     @Before
     public void before() throws IOException {
@@ -48,7 +54,7 @@ public class MaleAttrMapperTest {
         MaleAttrMapper mapper = sqlSession.getMapper(MaleAttrMapper.class);
 
         MaleAttr maleAttr = new MaleAttr();
-        maleAttr.setStudentId(1L);
+        maleAttr.setStudentId(nextStudentId());
 
         System.out.println(mapper.insert(maleAttr));
 
@@ -69,7 +75,7 @@ public class MaleAttrMapperTest {
         MaleAttrMapper mapper = sqlSession.getMapper(MaleAttrMapper.class);
 
         MaleAttr maleAttr = new MaleAttr();
-        maleAttr.setStudentId(1L);
+        maleAttr.setStudentId(nextStudentId());
 
         System.out.println(mapper.insertBack(maleAttr));
 
@@ -90,7 +96,7 @@ public class MaleAttrMapperTest {
         MaleAttrMapper mapper = sqlSession.getMapper(MaleAttrMapper.class);
 
         MaleAttr maleAttr = new MaleAttr();
-        maleAttr.setStudentId(1L);
+        maleAttr.setStudentId(nextStudentId());
 
         System.out.println(mapper.insertSelect(maleAttr));
 
@@ -111,7 +117,7 @@ public class MaleAttrMapperTest {
         MaleAttrMapper mapper = sqlSession.getMapper(MaleAttrMapper.class);
 
         MaleAttr maleAttr = new MaleAttr();
-        maleAttr.setStudentId(1L);
+        maleAttr.setStudentId(nextStudentId());
 
         System.out.println(mapper.insertSelectBack(maleAttr));
 
@@ -132,7 +138,7 @@ public class MaleAttrMapperTest {
         MaleAttrMapper mapper = sqlSession.getMapper(MaleAttrMapper.class);
 
         MaleAttr maleAttr = new MaleAttr();
-        maleAttr.setStudentId(1L);
+        maleAttr.setStudentId(nextStudentId());
 
         System.out.println(mapper.insertSelectBackUseSelectKey(maleAttr));
 
@@ -143,5 +149,10 @@ public class MaleAttrMapperTest {
         sqlSession.commit();
 
         sqlSession.close();
+    }
+
+    private Long nextStudentId(){
+
+        return random.nextInt(MAX_STUDENT_ID_) + 1L;
     }
 }

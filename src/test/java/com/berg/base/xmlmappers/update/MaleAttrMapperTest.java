@@ -12,11 +12,17 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class MaleAttrMapperTest {
 
     private SqlSessionFactory sqlSessionFactory = null;
+
+    private Random random = new Random(new Date().getTime());
+
+    private static final Integer MAX_STUDENT_ID_ = 19;
 
     @Before
     public void before() throws IOException {
@@ -38,6 +44,63 @@ public class MaleAttrMapperTest {
         OutputUtil.outputlist(maleAttrList);
 
         sqlSession.close();
+    }
+
+    @Test
+    public void testUpdateById(){
+
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        MaleAttrMapper mapper = sqlSession.getMapper(MaleAttrMapper.class);
+
+        MaleAttr maleAttr = new MaleAttr();
+
+        maleAttr.setId(9L);
+        maleAttr.setStudentId(nextStudentId());
+        maleAttr.setGame("king");
+
+        System.out.println(mapper.updateById(maleAttr));
+
+        System.out.println(maleAttr);
+
+        OutputUtil.outputlist(mapper.select(maleAttr));
+
+        sqlSession.commit();
+
+        sqlSession.close();
+    }
+
+    @Test
+    public void testUpdateByCondition(){
+
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        MaleAttrMapper mapper = sqlSession.getMapper(MaleAttrMapper.class);
+
+        MaleAttr maleAttr = new MaleAttr();
+
+        maleAttr.setId(9L);
+        maleAttr.setStudentId(nextStudentId());
+        maleAttr.setGame("king");
+
+        MaleAttr condition = new MaleAttr();
+        condition.setStudentId(nextStudentId());
+
+        System.out.println(mapper.updateByCondition(maleAttr, condition));
+
+        System.out.println(maleAttr);
+
+        OutputUtil.outputlist(mapper.select(maleAttr));
+
+        sqlSession.commit();
+
+        sqlSession.close();
+    }
+
+
+    private Long nextStudentId(){
+
+        return random.nextInt(MAX_STUDENT_ID_) + 1L;
     }
 
 

@@ -49,9 +49,44 @@
         </trim>
     </select>
 
-    <update id="updateById">
-        UPDATE <include refid="TableName"/>
-
+    <update id="updateById" parameterType="com.berg.base.xmlmappers.update.dto.MaleAttr">
+        <if test="id!=null and id!=0">
+            UPDATE <include refid="TableName"/>
+            <set>
+                <if test="studentId!=null and studentId!=0">
+                    STUDENT_ID = #{studentId},
+                </if>
+                <if test="game!=null and !game.equals('')">
+                    GAME = #{game}
+                </if>
+            </set>
+            WHERE
+            ID = #{id}
+        </if>
     </update>
 
+    <update id="updateByCondition">
+        <if test="condition!=null">
+            UPDATE <include refid="TableName"/>
+            <set>
+                <if test="maleAttr.studentId!=null and maleAttr.studentId!=0">
+                    STUDENT_ID = #{maleAttr.studentId},
+                </if>
+                <if test="maleAttr.game!=null and !maleAttr.game.equals('')">
+                    GAME = #{maleAttr.game}
+                </if>
+            </set>
+            <where>
+                <if test="condition.id!=null and condition.id!=0">
+                    ID = #{condition.id}
+                </if>
+                <if test="condition.studentId!=null and condition.studentId!=0">
+                    AND STUDENT_ID = #{condition.studentId}
+                </if>
+                <if test="condition.game!=null and !condition.game.equals('')">
+                    AND GAME = #{condition.game}
+                </if>
+            </where>
+        </if>
+    </update>
 </mapper>
