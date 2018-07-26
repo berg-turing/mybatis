@@ -70,8 +70,6 @@ public class MapperRegistry {
     }
 
     /**
-     *
-     *
      * @param type
      * @param <T>
      */
@@ -128,7 +126,7 @@ public class MapperRegistry {
 
     /**
      * @since 3.2.2
-     *
+     * <p>
      * 注解所有的mapper接口
      */
     public void addMappers(String packageName, Class<?> superType) {

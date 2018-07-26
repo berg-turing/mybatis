@@ -41,8 +41,8 @@ public class SimpleExecutor extends BaseExecutor {
     /**
      * 简单执行器的构造函数
      *
-     * @param configuration     配置对象
-     * @param transaction       事务对象
+     * @param configuration 配置对象
+     * @param transaction   事务对象
      */
     public SimpleExecutor(Configuration configuration, Transaction transaction) {
         super(configuration, transaction);
@@ -97,7 +97,6 @@ public class SimpleExecutor extends BaseExecutor {
     }
 
     /**
-     *
      * @param handler
      * @param statementLog
      * @return

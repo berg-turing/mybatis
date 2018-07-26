@@ -44,7 +44,6 @@ public class ReuseExecutor extends BaseExecutor {
     private final Map<String, Statement> statementMap = new HashMap<String, Statement>();
 
     /**
-     *
      * @param configuration
      * @param transaction
      */
@@ -103,10 +102,10 @@ public class ReuseExecutor extends BaseExecutor {
     /**
      * 创建并设置相关参数成功的Statement对象
      *
-     * @param handler           Statement处理器
-     * @param statementLog      日志打印对象
-     * @return                  创建并设置相关参数成功的Statement对象
-     * @throws SQLException     sql异常
+     * @param handler      Statement处理器
+     * @param statementLog 日志打印对象
+     * @return 创建并设置相关参数成功的Statement对象
+     * @throws SQLException sql异常
      */
     private Statement prepareStatement(StatementHandler handler, Log statementLog) throws SQLException {
 
@@ -145,7 +144,6 @@ public class ReuseExecutor extends BaseExecutor {
     }
 
     /**
-     *
      * @param sql
      * @return
      */

@@ -50,7 +50,7 @@ public class SqlSessionFactoryBuilder {
     /**
      * 解析配置文件,并创建SqlSessionFactory对象
      *
-     * @param reader        配置文件的输入流
+     * @param reader      配置文件的输入流
      * @param environment
      * @param properties
      * @return
@@ -97,7 +97,6 @@ public class SqlSessionFactoryBuilder {
     }
 
     /**
-     *
      * @param inputStream
      * @param environment
      * @param properties

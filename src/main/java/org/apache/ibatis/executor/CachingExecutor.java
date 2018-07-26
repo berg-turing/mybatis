@@ -53,7 +53,7 @@ public class CachingExecutor implements Executor {
     /**
      * 带缓存的执行器的构造器
      *
-     * @param delegate      实际的执行器对象
+     * @param delegate 实际的执行器对象
      */
     public CachingExecutor(Executor delegate) {
         this.delegate = delegate;

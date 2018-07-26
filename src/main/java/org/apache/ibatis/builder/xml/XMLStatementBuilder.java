@@ -190,7 +190,6 @@ public class XMLStatementBuilder extends BaseBuilder {
     }
 
     /**
-     *
      * @param id
      * @param parameterTypeClass
      * @param langDriver
@@ -205,7 +204,6 @@ public class XMLStatementBuilder extends BaseBuilder {
     }
 
     /**
-     *
      * @param parentId
      * @param list
      * @param parameterTypeClass
@@ -223,7 +221,6 @@ public class XMLStatementBuilder extends BaseBuilder {
     }
 
     /**
-     *
      * @param id
      * @param nodeToHandle
      * @param parameterTypeClass
@@ -264,7 +261,6 @@ public class XMLStatementBuilder extends BaseBuilder {
     }
 
     /**
-     *
      * @param selectKeyNodes
      */
     private void removeSelectKeyNodes(List<XNode> selectKeyNodes) {
@@ -274,7 +270,6 @@ public class XMLStatementBuilder extends BaseBuilder {
     }
 
     /**
-     *
      * @param id
      * @param databaseId
      * @param requiredDatabaseId

@@ -54,7 +54,6 @@ public class MapperProxyFactory<T> {
     }
 
     /**
-     *
      * @return
      */
     public Map<Method, MapperMethod> getMethodCache() {
@@ -75,7 +74,6 @@ public class MapperProxyFactory<T> {
     }
 
     /**
-     *
      * @param sqlSession
      * @return
      */

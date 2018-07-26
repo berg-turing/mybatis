@@ -264,7 +264,9 @@ public final class MappedStatement {
             return this;
         }
 
-        /** @deprecated Use {@link #resultSets} */
+        /**
+         * @deprecated Use {@link #resultSets}
+         */
         @Deprecated
         public Builder resulSets(String resultSet) {
             mappedStatement.resultSets = delimitedStringToArray(resultSet);
@@ -373,7 +375,9 @@ public final class MappedStatement {
         return resultSets;
     }
 
-    /** @deprecated Use {@link #getResultSets()} */
+    /**
+     * @deprecated Use {@link #getResultSets()}
+     */
     @Deprecated
     public String[] getResulSets() {
         return resultSets;

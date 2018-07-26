@@ -38,8 +38,6 @@ import org.apache.ibatis.io.Resources;
 
 /**
  * 类型别名注册器
- *
- *
  */
 public class TypeAliasRegistry {
 
@@ -50,10 +48,9 @@ public class TypeAliasRegistry {
 
     /**
      * 构造并初始化默认的类型别名
-     *
+     * <p>
      * 对象类型的别名都是其类名首字母小写的字符串
      * 基本类型的别名是在基本类型类型名前面加"_"的字符串
-     *
      */
     public TypeAliasRegistry() {
 
@@ -176,7 +173,6 @@ public class TypeAliasRegistry {
     }
 
     /**
-     *
      * @param packageName
      * @param superType
      */
@@ -199,7 +195,6 @@ public class TypeAliasRegistry {
     }
 
     /**
-     *
      * @param type
      */
     public void registerAlias(Class<?> type) {
@@ -221,7 +216,6 @@ public class TypeAliasRegistry {
     }
 
     /**
-     *
      * @param alias
      * @param value
      */
@@ -244,7 +238,6 @@ public class TypeAliasRegistry {
     }
 
     /**
-     *
      * @param alias
      * @param value
      */
@@ -259,8 +252,6 @@ public class TypeAliasRegistry {
 
     /**
      * @since 3.2.2
-     *
-     *
      */
     public Map<String, Class<?>> getTypeAliases() {
         return Collections.unmodifiableMap(TYPE_ALIASES);

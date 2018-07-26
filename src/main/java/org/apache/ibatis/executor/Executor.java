@@ -72,28 +72,28 @@ public interface Executor {
     /**
      * 获取事务对象
      *
-     * @return  事务对象
+     * @return 事务对象
      */
     Transaction getTransaction();
 
     /**
      * 关闭执行器
      *
-     * @param forceRollback     是否强制回滚
+     * @param forceRollback 是否强制回滚
      */
     void close(boolean forceRollback);
 
     /**
      * 判断是否已经关闭
      *
-     * @return      是否关闭的结果
+     * @return 是否关闭的结果
      */
     boolean isClosed();
 
     /**
      * 设置执行器对象的包装对象
      *
-     * @param executor  包装对象
+     * @param executor 包装对象
      */
     void setExecutorWrapper(Executor executor);
 

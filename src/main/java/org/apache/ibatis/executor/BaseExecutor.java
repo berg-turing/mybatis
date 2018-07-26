@@ -97,8 +97,8 @@ public abstract class BaseExecutor implements Executor {
     /**
      * 构造函数
      *
-     * @param configuration     配置对象
-     * @param transaction       事务对象
+     * @param configuration 配置对象
+     * @param transaction   事务对象
      */
     protected BaseExecutor(Configuration configuration, Transaction transaction) {
 
@@ -191,7 +191,6 @@ public abstract class BaseExecutor implements Executor {
     }
 
     /**
-     *
      * @param isRollBack
      * @return
      * @throws SQLException
@@ -426,17 +425,17 @@ public abstract class BaseExecutor implements Executor {
 
     /**
      * Apply a transaction timeout.
+     *
      * @param statement a current statement
      * @throws SQLException if a database access error occurs, this method is called on a closed <code>Statement</code>
-     * @since 3.4.0
      * @see StatementUtil#applyTransactionTimeout(Statement, Integer, Integer)
+     * @since 3.4.0
      */
     protected void applyTransactionTimeout(Statement statement) throws SQLException {
         StatementUtil.applyTransactionTimeout(statement, statement.getQueryTimeout(), transaction.getTimeout());
     }
 
     /**
-     *
      * @param ms
      * @param key
      * @param parameter
@@ -469,15 +468,15 @@ public abstract class BaseExecutor implements Executor {
     /**
      * 从数据库中查找数据
      *
-     * @param ms                语句对象
-     * @param parameter         参数对象
-     * @param rowBounds         分页对象
-     * @param resultHandler     结果处理器对象
-     * @param key               本地缓存的key
-     * @param boundSql          获取sql语句的对象
-     * @param <E>               查询时的结果参数类型
-     * @return                  查询的结果
-     * @throws SQLException     sql错误
+     * @param ms            语句对象
+     * @param parameter     参数对象
+     * @param rowBounds     分页对象
+     * @param resultHandler 结果处理器对象
+     * @param key           本地缓存的key
+     * @param boundSql      获取sql语句的对象
+     * @param <E>           查询时的结果参数类型
+     * @return 查询的结果
+     * @throws SQLException sql错误
      */
     private <E> List<E> queryFromDatabase(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
         List<E> list;

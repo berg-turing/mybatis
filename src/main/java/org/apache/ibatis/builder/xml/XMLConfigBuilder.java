@@ -55,7 +55,6 @@ public class XMLConfigBuilder extends BaseBuilder {
 
     /**
      * 解析的状态
-     *
      */
     private boolean parsed;
 
@@ -127,6 +126,7 @@ public class XMLConfigBuilder extends BaseBuilder {
 
     /**
      * 获取配置的Configuration对象
+     *
      * @return
      */
     public Configuration parse() {
@@ -145,8 +145,8 @@ public class XMLConfigBuilder extends BaseBuilder {
 
     /**
      * 解析mybatisConfig.xml文件, properties, setting, typeAliases, plugins,
-     *  objectFactory, objectWrapperFactory, environments, databaseIdProvider
-     *  typeHandlers, mappers
+     * objectFactory, objectWrapperFactory, environments, databaseIdProvider
+     * typeHandlers, mappers
      *
      * @param root
      */
@@ -236,8 +236,6 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     /**
-     *
-     *
      * @param props
      * @throws ClassNotFoundException
      */
@@ -352,8 +350,8 @@ public class XMLConfigBuilder extends BaseBuilder {
     /**
      * 解析对象工厂
      *
-     * @param context       对象工厂的配置节点
-     * @throws Exception    解析异常错误
+     * @param context 对象工厂的配置节点
+     * @throws Exception 解析异常错误
      */
     private void objectFactoryElement(XNode context) throws Exception {
 
@@ -376,7 +374,6 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     /**
-     *
      * @param context
      * @throws Exception
      */
@@ -395,7 +392,6 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     /**
-     *
      * @param context
      * @throws Exception
      */
@@ -416,8 +412,8 @@ public class XMLConfigBuilder extends BaseBuilder {
     /**
      * 解析properties标签中的内容
      *
-     * @param context       <properties></properties>节点对象
-     * @throws Exception    resource与url属性同时存在时，抛出异常
+     * @param context <properties></properties>节点对象
+     * @throws Exception resource与url属性同时存在时，抛出异常
      */
     private void propertiesElement(XNode context) throws Exception {
 
@@ -560,7 +556,6 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     /**
-     *
      * @param context
      * @throws Exception
      */
@@ -624,7 +619,6 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     /**
-     *
      * @param parent
      * @throws Exception
      */

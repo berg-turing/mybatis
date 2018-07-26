@@ -271,8 +271,6 @@ public class XPathParser {
     }
 
     /**
-     *
-     *
      * @param root
      * @param expression
      * @return
@@ -287,7 +285,6 @@ public class XPathParser {
     }
 
     /**
-     *
      * @param expression
      * @param root
      * @param returnType

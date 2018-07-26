@@ -21,9 +21,8 @@ import org.apache.ibatis.transaction.TransactionFactory;
 
 /**
  * @author Clinton Begin
- *
+ * <p>
  * 数据库环境对象
- *
  */
 public final class Environment {
 

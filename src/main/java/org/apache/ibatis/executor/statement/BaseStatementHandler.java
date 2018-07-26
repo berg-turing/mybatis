@@ -174,8 +174,6 @@ public abstract class BaseStatementHandler implements StatementHandler {
     }
 
     /**
-     *
-     *
      * @param stmt
      * @throws SQLException
      */

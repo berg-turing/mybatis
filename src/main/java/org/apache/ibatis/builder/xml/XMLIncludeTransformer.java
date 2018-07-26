@@ -46,7 +46,7 @@ public class XMLIncludeTransformer {
     /**
      * 构造
      *
-     * @param configuration         配置对象
+     * @param configuration    配置对象
      * @param builderAssistant
      */
     public XMLIncludeTransformer(Configuration configuration, MapperBuilderAssistant builderAssistant) {
@@ -77,7 +77,8 @@ public class XMLIncludeTransformer {
 
     /**
      * Recursively apply includes through all SQL fragments.
-     * @param source Include node in DOM tree
+     *
+     * @param source           Include node in DOM tree
      * @param variablesContext Current context for static variables with values
      */
     private void applyIncludes(Node source, final Properties variablesContext, boolean included) {
@@ -122,8 +123,8 @@ public class XMLIncludeTransformer {
     /**
      * 寻找sql语句对象
      *
-     * @param refid         id
-     * @param variables     参数
+     * @param refid     id
+     * @param variables 参数
      * @return
      */
     private Node findSqlFragment(String refid, Properties variables) {
@@ -144,7 +145,6 @@ public class XMLIncludeTransformer {
     }
 
     /**
-     *
      * @param node
      * @param name
      * @return
@@ -156,7 +156,8 @@ public class XMLIncludeTransformer {
 
     /**
      * Read placeholders and their values from include node definition.
-     * @param node Include node instance
+     *
+     * @param node                      Include node instance
      * @param inheritedVariablesContext Current context used for replace variables in new variables values
      * @return variables context from include instance (no inherited values)
      */

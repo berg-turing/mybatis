@@ -30,7 +30,6 @@ public class InterceptorChain {
 
     /**
      * 插件List
-     *
      */
     private final List<Interceptor> interceptors = new ArrayList<Interceptor>();
 

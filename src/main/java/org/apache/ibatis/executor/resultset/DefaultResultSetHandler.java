@@ -246,7 +246,6 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     }
 
     /**
-     *
      * @param stmt
      * @return
      * @throws SQLException

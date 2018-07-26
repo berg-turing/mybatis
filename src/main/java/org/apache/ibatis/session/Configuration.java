@@ -141,7 +141,7 @@ public class Configuration {
     protected boolean useColumnLabel = true;
 
     /**
-     *全局映射器启用或禁用缓存
+     * 全局映射器启用或禁用缓存
      */
     protected boolean cacheEnabled = true;
 
@@ -288,10 +288,10 @@ public class Configuration {
     /**
      * 所有的语句对象
      * 每一个
-     *      <select></select>
-     *      <update></update>
-     *      <delete></delete>
-     *      <insert></insert>
+     * <select></select>
+     * <update></update>
+     * <delete></delete>
+     * <insert></insert>
      * 语句都会生成一个MappedStatement对象
      */
     protected final Map<String, MappedStatement> mappedStatements = new StrictMap<MappedStatement>("Mapped Statements collection");
@@ -355,7 +355,6 @@ public class Configuration {
 
 
     /**
-     *
      * @param environment
      */
     public Configuration(Environment environment) {
@@ -671,6 +670,7 @@ public class Configuration {
     /**
      * Set a default {@link TypeHandler} class for {@link Enum}.
      * A default {@link TypeHandler} is {@link org.apache.ibatis.type.EnumTypeHandler}.
+     *
      * @param typeHandler a type handler class for {@link Enum}
      * @since 3.4.5
      */
@@ -737,7 +737,9 @@ public class Configuration {
         return languageRegistry.getDefaultDriver();
     }
 
-    /** @deprecated Use {@link #getDefaultScriptingLanguageInstance()} */
+    /**
+     * @deprecated Use {@link #getDefaultScriptingLanguageInstance()}
+     */
     @Deprecated
     public LanguageDriver getDefaultScriptingLanuageInstance() {
         return getDefaultScriptingLanguageInstance();
@@ -761,7 +763,6 @@ public class Configuration {
     }
 
     /**
-     *
      * @param executor
      * @param mappedStatement
      * @param parameterObject

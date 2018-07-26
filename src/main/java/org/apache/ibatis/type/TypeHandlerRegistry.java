@@ -39,9 +39,8 @@ import org.apache.ibatis.reflection.Jdk;
 /**
  * @author Clinton Begin
  * @author Kazuki Shimizu
- *
+ * <p>
  * 类型处理注册器
- *
  */
 public final class TypeHandlerRegistry {
 
@@ -174,6 +173,7 @@ public final class TypeHandlerRegistry {
     /**
      * Set a default {@link TypeHandler} class for {@link Enum}.
      * A default {@link TypeHandler} is {@link org.apache.ibatis.type.EnumTypeHandler}.
+     *
      * @param typeHandler a type handler class for {@link Enum}
      * @since 3.4.5
      */

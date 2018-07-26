@@ -49,7 +49,7 @@ import org.apache.ibatis.type.TypeHandler;
 
 /**
  * @author Clinton Begin
- *
+ * <p>
  * mapper文件解析器
  */
 public class XMLMapperBuilder extends BaseBuilder {
@@ -153,8 +153,6 @@ public class XMLMapperBuilder extends BaseBuilder {
     }
 
     /**
-     *
-     *
      * @param context
      */
     private void configurationElement(XNode context) {
@@ -263,7 +261,7 @@ public class XMLMapperBuilder extends BaseBuilder {
     /**
      * 解析cache-ref
      *
-     * @param context   cache-ref节点对象
+     * @param context cache-ref节点对象
      */
     private void cacheRefElement(XNode context) {
 
@@ -330,8 +328,8 @@ public class XMLMapperBuilder extends BaseBuilder {
     /**
      * 解析resultMap
      *
-     * @param list          所有的resultMap节点对象
-     * @throws Exception    解析异常
+     * @param list 所有的resultMap节点对象
+     * @throws Exception 解析异常
      */
     private void resultMapElements(List<XNode> list) throws Exception {
 
@@ -351,9 +349,9 @@ public class XMLMapperBuilder extends BaseBuilder {
     /**
      * 解析具体的resultMapNode
      *
-     * @param resultMapNode     resultMap节点
-     * @return                  解析出来的ResultMap对象
-     * @throws Exception        解析异常
+     * @param resultMapNode resultMap节点
+     * @return 解析出来的ResultMap对象
+     * @throws Exception 解析异常
      */
     private ResultMap resultMapElement(XNode resultMapNode) throws Exception {
 
@@ -363,10 +361,10 @@ public class XMLMapperBuilder extends BaseBuilder {
     /**
      * 解析具体的resultMapNode
      *
-     * @param resultMapNode                 resultMap节点
+     * @param resultMapNode            resultMap节点
      * @param additionalResultMappings
-     * @return                              解析出来的ResultMap对象
-     * @throws Exception                    解析异常
+     * @return 解析出来的ResultMap对象
+     * @throws Exception 解析异常
      */
     private ResultMap resultMapElement(XNode resultMapNode, List<ResultMapping> additionalResultMappings) throws Exception {
 
@@ -447,9 +445,9 @@ public class XMLMapperBuilder extends BaseBuilder {
     /**
      * 处理constructor节点
      *
-     * @param resultChild           节点对象
-     * @param resultType            结果类型类
-     * @param resultMappings        resultMappings对象
+     * @param resultChild    节点对象
+     * @param resultType     结果类型类
+     * @param resultMappings resultMappings对象
      * @throws Exception
      */
     private void processConstructorElement(XNode resultChild, Class<?> resultType, List<ResultMapping> resultMappings) throws Exception {
@@ -530,7 +528,6 @@ public class XMLMapperBuilder extends BaseBuilder {
     }
 
     /**
-     *
      * @param list
      * @throws Exception
      */
@@ -573,10 +570,8 @@ public class XMLMapperBuilder extends BaseBuilder {
     }
 
     /**
-     *
-     *
-     * @param context           节点对象
-     * @param resultType        结果类型
+     * @param context    节点对象
+     * @param resultType 结果类型
      * @param flags
      * @return
      * @throws Exception
