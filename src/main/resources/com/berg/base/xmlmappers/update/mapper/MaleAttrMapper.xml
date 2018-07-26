@@ -51,7 +51,7 @@
 
     <update id="updateById">
         UPDATE <include refid="TableName"/>
-        
+
     </update>
 
 </mapper>
