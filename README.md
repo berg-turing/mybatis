@@ -73,12 +73,18 @@ mvn clean install -Dmaven.test.skip=true
 项目将引入mybatis、junit和mysql的依赖
 
 
+打开项目下/src/main/resources/db/database.sql，并在数据库中执行该sql文件内的sql语句，  
+将会在数据库中创建一个名为mybatis的数据库，并导入一些初始化的数据  
+
+(注意：如果自己数据库中存在mybatis名称的数据库，该sql语句会删除已有的数据库)
+
 ![](https://github.com/berg-turing/mybatis/raw/master/source/image/idea_database.png)
 
-
+执行sql创库语句  
 
 ![](https://github.com/berg-turing/mybatis/raw/master/source/image/workbench_exesql.png)
 
+数据库创建成功  
 
 ![](https://github.com/berg-turing/mybatis/raw/master/source/image/workbench_database.png)
 
