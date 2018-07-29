@@ -30,16 +30,13 @@ public class StudentMapperTest {
 
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
-        try{
-            StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
+        StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
 
-            StudentDto studentDto = mapper.selectOne(1L);
+        StudentDto studentDto = mapper.selectOne(1L);
 
-            System.out.println(studentDto);
-        }finally {
-            sqlSession.close();
-        }
+        System.out.println(studentDto);
 
+        sqlSession.close();
     }
 
     @Test
@@ -47,17 +44,15 @@ public class StudentMapperTest {
 
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
-        try{
-            StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
+        StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
 
-            StudentDto studentDto = new StudentDto();
+        StudentDto studentDto = new StudentDto();
 
-            List<StudentDto> select = mapper.select(studentDto);
+        List<StudentDto> select = mapper.select(studentDto);
 
-            OutputUtil.outputlist(select);
-        }finally {
-            sqlSession.close();
-        }
+        OutputUtil.outputlist(select);
+
+        sqlSession.close();
 
     }
 
@@ -66,17 +61,15 @@ public class StudentMapperTest {
 
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
-        try{
-            StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
+        StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
 
-            StudentDto studentDto = new StudentDto();
+        StudentDto studentDto = new StudentDto();
 
-            List<StudentDto> select = mapper.selectWithExtends(studentDto);
+        List<StudentDto> select = mapper.selectWithExtends(studentDto);
 
-            OutputUtil.outputlist(select);
-        }finally {
-            sqlSession.close();
-        }
+        OutputUtil.outputlist(select);
+
+        sqlSession.close();
 
     }
 
