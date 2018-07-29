@@ -41,15 +41,38 @@ import java.util.*;
  */
 public class MapperMethod {
 
+    /**
+     * sql
+     */
     private final SqlCommand command;
+
+    /**
+     *
+     */
     private final MethodSignature method;
 
+    /**
+     *
+     * @param mapperInterface
+     * @param method
+     * @param config
+     */
     public MapperMethod(Class<?> mapperInterface, Method method, Configuration config) {
 
+        //sql command 对象
         this.command = new SqlCommand(config, mapperInterface, method);
+
+        //
         this.method = new MethodSignature(config, mapperInterface, method);
     }
 
+    /**
+     * 执行代理的过程
+     *
+     * @param sqlSession    sqlSession对象
+     * @param args          方法执行时候的参数
+     * @return              方法执行的结果
+     */
     public Object execute(SqlSession sqlSession, Object[] args) {
 
         Object result;
@@ -97,6 +120,11 @@ public class MapperMethod {
         return result;
     }
 
+    /**
+     *
+     * @param rowCount
+     * @return
+     */
     private Object rowCountResult(int rowCount) {
 
         final Object result;
@@ -114,6 +142,11 @@ public class MapperMethod {
         return result;
     }
 
+    /**
+     *
+     * @param sqlSession
+     * @param args
+     */
     private void executeWithResultHandler(SqlSession sqlSession, Object[] args) {
 
         MappedStatement ms = sqlSession.getConfiguration().getMappedStatement(command.getName());
@@ -131,6 +164,13 @@ public class MapperMethod {
         }
     }
 
+    /**
+     *
+     * @param sqlSession
+     * @param args
+     * @param <E>
+     * @return
+     */
     private <E> Object executeForMany(SqlSession sqlSession, Object[] args) {
 
         List<E> result;
@@ -152,6 +192,13 @@ public class MapperMethod {
         return result;
     }
 
+    /**
+     *
+     * @param sqlSession
+     * @param args
+     * @param <T>
+     * @return
+     */
     private <T> Cursor<T> executeForCursor(SqlSession sqlSession, Object[] args) {
 
         Cursor<T> result;
@@ -165,6 +212,13 @@ public class MapperMethod {
         return result;
     }
 
+    /**
+     *
+     * @param config
+     * @param list
+     * @param <E>
+     * @return
+     */
     private <E> Object convertToDeclaredCollection(Configuration config, List<E> list) {
 
         Object collection = config.getObjectFactory().create(method.getReturnType());
@@ -173,6 +227,12 @@ public class MapperMethod {
         return collection;
     }
 
+    /**
+     *
+     * @param list
+     * @param <E>
+     * @return
+     */
     @SuppressWarnings("unchecked")
     private <E> Object convertToArray(List<E> list) {
 
@@ -188,6 +248,14 @@ public class MapperMethod {
         }
     }
 
+    /**
+     *
+     * @param sqlSession
+     * @param args
+     * @param <K>
+     * @param <V>
+     * @return
+     */
     private <K, V> Map<K, V> executeForMap(SqlSession sqlSession, Object[] args) {
 
         Map<K, V> result;
@@ -201,6 +269,10 @@ public class MapperMethod {
         return result;
     }
 
+    /**
+     *
+     * @param <V>
+     */
     public static class ParamMap<V> extends HashMap<String, V> {
 
         private static final long serialVersionUID = -2212268410512043556L;
@@ -215,28 +287,65 @@ public class MapperMethod {
 
     }
 
+    /**
+     *
+     */
     public static class SqlCommand {
 
+        /**
+         * sql命令的名称，全名称
+         */
         private final String name;
+
+        /**
+         * sql命令的类型
+         */
         private final SqlCommandType type;
 
+        /**
+         * sql
+         *
+         * @param configuration         配置对象
+         * @param mapperInterface       mapper的接口类
+         * @param method                当前执行的mapper方法对象
+         */
         public SqlCommand(Configuration configuration, Class<?> mapperInterface, Method method) {
 
+            //方法名
             final String methodName = method.getName();
+
+            //定义的接口类
             final Class<?> declaringClass = method.getDeclaringClass();
+
+            //获取MappedStatement对象
             MappedStatement ms = resolveMappedStatement(mapperInterface, methodName, declaringClass,
                     configuration);
+
+            //判断是否找到了对应的MappedStatement对象
             if (ms == null) {
+
+                //判断方法是否有 Flush 的注解
                 if (method.getAnnotation(Flush.class) != null) {
+
                     name = null;
+                    //sql命令的类型为刷新
                     type = SqlCommandType.FLUSH;
                 } else {
+
+                    //没有找到MappedStatement对象，同时该方法也没有Flush注解
+                    //就抛出异常
                     throw new BindingException("Invalid bound statement (not found): "
                             + mapperInterface.getName() + "." + methodName);
                 }
             } else {
+
+                //获取MappedStatement对象的id
                 name = ms.getId();
+
+                //获取MappedStatement对象的命令类型
                 type = ms.getSqlCommandType();
+
+                //如果是未知的命令类型，就抛出异常
                 if (type == SqlCommandType.UNKNOWN) {
                     throw new BindingException("Unknown execution method for: " + name);
                 }
@@ -251,15 +360,28 @@ public class MapperMethod {
             return type;
         }
 
+        /**
+         * 解析相关的参数，获取对应的MappedStatement对象
+         *
+         * @param mapperInterface       mapper的接口类
+         * @param methodName            方法名
+         * @param declaringClass
+         * @param configuration         配置对象
+         * @return
+         */
         private MappedStatement resolveMappedStatement(Class<?> mapperInterface, String methodName,
                                                        Class<?> declaringClass, Configuration configuration) {
 
             String statementId = mapperInterface.getName() + "." + methodName;
+
             if (configuration.hasStatement(statementId)) {
+
                 return configuration.getMappedStatement(statementId);
             } else if (mapperInterface.equals(declaringClass)) {
+
                 return null;
             }
+
             for (Class<?> superInterface : mapperInterface.getInterfaces()) {
                 if (declaringClass.isAssignableFrom(superInterface)) {
                     MappedStatement ms = resolveMappedStatement(superInterface, methodName,
@@ -269,22 +391,69 @@ public class MapperMethod {
                     }
                 }
             }
+
             return null;
         }
     }
 
+    /**
+     *
+     *
+     */
     public static class MethodSignature {
 
+        /**
+         *
+         */
         private final boolean returnsMany;
+
+        /**
+         *
+         */
         private final boolean returnsMap;
+
+        /**
+         *
+         */
         private final boolean returnsVoid;
+
+        /**
+         *
+         */
         private final boolean returnsCursor;
+
+        /**
+         *
+         */
         private final Class<?> returnType;
+
+        /**
+         *
+         *
+         */
         private final String mapKey;
+
+        /**
+         *
+         */
         private final Integer resultHandlerIndex;
+
+        /**
+         *
+         */
         private final Integer rowBoundsIndex;
+
+        /**
+         *
+         */
         private final ParamNameResolver paramNameResolver;
 
+        /**
+         *
+         * @param configuration
+         * @param mapperInterface
+         * @param method
+         */
         public MethodSignature(Configuration configuration, Class<?> mapperInterface, Method method) {
 
             Type resolvedReturnType = TypeParameterResolver.resolveReturnType(method, mapperInterface);
@@ -305,41 +474,76 @@ public class MapperMethod {
             this.paramNameResolver = new ParamNameResolver(configuration, method);
         }
 
+        /**
+         *
+         * @param args
+         * @return
+         */
         public Object convertArgsToSqlCommandParam(Object[] args) {
 
             return paramNameResolver.getNamedParams(args);
         }
 
+        /**
+         *
+         * @return
+         */
         public boolean hasRowBounds() {
 
             return rowBoundsIndex != null;
         }
 
+        /**
+         *
+         * @param args
+         * @return
+         */
         public RowBounds extractRowBounds(Object[] args) {
 
             return hasRowBounds() ? (RowBounds) args[rowBoundsIndex] : null;
         }
 
+        /**
+         *
+         * @return
+         */
         public boolean hasResultHandler() {
 
             return resultHandlerIndex != null;
         }
 
+        /**
+         *
+         * @param args
+         * @return
+         */
         public ResultHandler extractResultHandler(Object[] args) {
 
             return hasResultHandler() ? (ResultHandler) args[resultHandlerIndex] : null;
         }
 
+        /**
+         *
+         * @return
+         */
         public String getMapKey() {
 
             return mapKey;
         }
 
+        /**
+         *
+         * @return
+         */
         public Class<?> getReturnType() {
 
             return returnType;
         }
 
+        /**
+         *
+         * @return
+         */
         public boolean returnsMany() {
 
             return returnsMany;
@@ -360,6 +564,12 @@ public class MapperMethod {
             return returnsCursor;
         }
 
+        /**
+         *
+         * @param method
+         * @param paramType
+         * @return
+         */
         private Integer getUniqueParamIndex(Method method, Class<?> paramType) {
 
             Integer index = null;
@@ -376,6 +586,11 @@ public class MapperMethod {
             return index;
         }
 
+        /**
+         *
+         * @param method
+         * @return
+         */
         private String getMapKey(Method method) {
 
             String mapKey = null;

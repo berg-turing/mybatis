@@ -39,7 +39,7 @@ public class MapperRegistry {
     private final Configuration config;
 
     /**
-     *
+     * mapper接口与其对应的Mapper代理工厂的map
      */
     private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<Class<?>, MapperProxyFactory<?>>();
 

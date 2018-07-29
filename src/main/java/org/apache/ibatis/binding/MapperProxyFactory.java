@@ -23,6 +23,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.ibatis.session.SqlSession;
 
 /**
+ * Mapper接口的代理工厂
+ * 每一个mapper接口都会有一个代理工厂
+ *
  * @author Lasse Voss
  */
 public class MapperProxyFactory<T> {
@@ -33,7 +36,7 @@ public class MapperProxyFactory<T> {
     private final Class<T> mapperInterface;
 
     /**
-     * 一级缓存
+     * 对mapper接口内的方法的缓存
      */
     private final Map<Method, MapperMethod> methodCache = new ConcurrentHashMap<Method, MapperMethod>();
 
@@ -41,7 +44,7 @@ public class MapperProxyFactory<T> {
      * 构造函数
      * 创建一个关联了接口的mapper代理工厂对象
      *
-     * @param mapperInterface
+     * @param mapperInterface       mapper接口对象
      */
     public MapperProxyFactory(Class<T> mapperInterface) {
 
@@ -62,10 +65,10 @@ public class MapperProxyFactory<T> {
     }
 
     /**
-     * 获取一个代理对象
+     * 获取一个动态代理实例
      *
-     * @param mapperProxy
-     * @return
+     * @param mapperProxy       接口代理类对象
+     * @return                  创建成功的动态代理实例
      */
     @SuppressWarnings("unchecked")
     protected T newInstance(MapperProxy<T> mapperProxy) {
@@ -74,8 +77,10 @@ public class MapperProxyFactory<T> {
     }
 
     /**
-     * @param sqlSession
-     * @return
+     * 获取一个动态代理实例
+     *
+     * @param sqlSession    sqlSession对象
+     * @return              生成的动态代理实例
      */
     public T newInstance(SqlSession sqlSession) {
 

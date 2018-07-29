@@ -16,6 +16,8 @@
 package org.apache.ibatis.session;
 
 /**
+ * 执行器的类型
+ *
  * @author Clinton Begin
  */
 public enum ExecutorType {

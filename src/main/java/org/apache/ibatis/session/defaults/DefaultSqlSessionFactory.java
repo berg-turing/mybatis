@@ -134,7 +134,8 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
             return new DefaultSqlSession(configuration, executor, autoCommit);
         } catch (Exception e) {
 
-            closeTransaction(tx); // may have fetched a connection so lets call close()
+            // may have fetched a connection so lets call close()
+            closeTransaction(tx);
             throw ExceptionFactory.wrapException("Error opening session.  Cause: " + e, e);
         } finally {
 
@@ -164,13 +165,27 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
         }
     }
 
+    /**
+     * 通过环境对象获取事务工厂
+     *
+     * @param environment       环境对象
+     * @return                  事务工厂
+     */
     private TransactionFactory getTransactionFactoryFromEnvironment(Environment environment) {
+
         if (environment == null || environment.getTransactionFactory() == null) {
+
             return new ManagedTransactionFactory();
         }
+
         return environment.getTransactionFactory();
     }
 
+    /**
+     * 关闭事务
+     *
+     * @param tx    事务对象
+     */
     private void closeTransaction(Transaction tx) {
         if (tx != null) {
             try {

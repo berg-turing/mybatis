@@ -39,10 +39,10 @@ public interface Executor {
     /**
      * 更新数据
      *
-     * @param ms
-     * @param parameter
-     * @return
-     * @throws SQLException
+     * @param ms                MappedStatement对象
+     * @param parameter         处理之后的参数对象
+     * @return                  处理结果影响的数据的条数
+     * @throws SQLException     SQL异常
      */
     int update(MappedStatement ms, Object parameter) throws SQLException;
 
