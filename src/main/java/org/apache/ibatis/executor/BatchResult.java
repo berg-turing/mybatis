@@ -25,10 +25,24 @@ import org.apache.ibatis.mapping.MappedStatement;
  */
 public class BatchResult {
 
+    /**
+     *
+     */
     private final MappedStatement mappedStatement;
+
+    /**
+     *
+     */
     private final String sql;
+
+    /**
+     *
+     */
     private final List<Object> parameterObjects;
 
+    /**
+     *
+     */
     private int[] updateCounts;
 
     public BatchResult(MappedStatement mappedStatement, String sql) {

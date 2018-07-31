@@ -16,6 +16,8 @@
 package org.apache.ibatis.cache;
 
 /**
+ *
+ *
  * @author Clinton Begin
  */
 public final class NullCacheKey extends CacheKey {

@@ -25,32 +25,62 @@ import org.apache.ibatis.cache.decorators.TransactionalCache;
  */
 public class TransactionalCacheManager {
 
+    /**
+     *
+     */
     private final Map<Cache, TransactionalCache> transactionalCaches = new HashMap<Cache, TransactionalCache>();
 
+    /**
+     *
+     * @param cache
+     */
     public void clear(Cache cache) {
         getTransactionalCache(cache).clear();
     }
 
+    /**
+     *
+     * @param cache
+     * @param key
+     * @return
+     */
     public Object getObject(Cache cache, CacheKey key) {
         return getTransactionalCache(cache).getObject(key);
     }
 
+    /**
+     *
+     * @param cache
+     * @param key
+     * @param value
+     */
     public void putObject(Cache cache, CacheKey key, Object value) {
         getTransactionalCache(cache).putObject(key, value);
     }
 
+    /**
+     *
+     */
     public void commit() {
         for (TransactionalCache txCache : transactionalCaches.values()) {
             txCache.commit();
         }
     }
 
+    /**
+     *
+     */
     public void rollback() {
         for (TransactionalCache txCache : transactionalCaches.values()) {
             txCache.rollback();
         }
     }
 
+    /**
+     *
+     * @param cache
+     * @return
+     */
     private TransactionalCache getTransactionalCache(Cache cache) {
         TransactionalCache txCache = transactionalCaches.get(cache);
         if (txCache == null) {

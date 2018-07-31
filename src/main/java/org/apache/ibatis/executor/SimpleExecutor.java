@@ -44,50 +44,109 @@ public class SimpleExecutor extends BaseExecutor {
      * @param configuration 配置对象
      * @param transaction   事务对象
      */
-    public SimpleExecutor(Configuration configuration, Transaction transaction) {
+    public SimpleExecutor(Configuration configuration,
+                          Transaction transaction) {
+
         super(configuration, transaction);
     }
 
     @Override
-    public int doUpdate(MappedStatement ms, Object parameter) throws SQLException {
+    public int doUpdate(MappedStatement ms,
+                        Object parameter) throws SQLException {
 
+        //Statement对象
         Statement stmt = null;
 
         try {
 
+            //获取配置对象
             Configuration configuration = ms.getConfiguration();
 
-            //
-            StatementHandler handler = configuration.newStatementHandler(this, ms, parameter, RowBounds.DEFAULT, null, null);
+            //创建StatementHandler对象
+            StatementHandler handler =
+                    configuration.
+                            newStatementHandler(
+                                    this,
+                                    ms,
+                                    parameter,
+                                    RowBounds.DEFAULT,
+                                    null,
+                                    null);
 
-            //
+            //执行预处理和参数处理
             stmt = prepareStatement(handler, ms.getStatementLog());
 
-            //
+            //执行更新，并返回更新结果
             return handler.update(stmt);
         } finally {
+
+            //关闭Statement对象
             closeStatement(stmt);
         }
     }
 
     @Override
-    public <E> List<E> doQuery(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) throws SQLException {
+    public <E> List<E> doQuery(MappedStatement ms,
+                               Object parameter,
+                               RowBounds rowBounds,
+                               ResultHandler resultHandler,
+                               BoundSql boundSql) throws SQLException {
+
+        //Statement对象
         Statement stmt = null;
+
         try {
+
+            //获取配置对象
             Configuration configuration = ms.getConfiguration();
-            StatementHandler handler = configuration.newStatementHandler(wrapper, ms, parameter, rowBounds, resultHandler, boundSql);
+
+            //创建StatementHandler
+            StatementHandler handler =
+                    configuration.
+                            newStatementHandler(
+                                    wrapper,
+                                    ms,
+                                    parameter,
+                                    rowBounds,
+                                    resultHandler,
+                                    boundSql);
+
+            //执行预处理和参数处理
             stmt = prepareStatement(handler, ms.getStatementLog());
+
+            //执行查询，并返回查询结果
             return handler.<E>query(stmt, resultHandler);
         } finally {
+
+            //关闭Statement对象
             closeStatement(stmt);
         }
     }
 
     @Override
-    protected <E> Cursor<E> doQueryCursor(MappedStatement ms, Object parameter, RowBounds rowBounds, BoundSql boundSql) throws SQLException {
+    protected <E> Cursor<E> doQueryCursor(MappedStatement ms,
+                                          Object parameter,
+                                          RowBounds rowBounds,
+                                          BoundSql boundSql) throws SQLException {
+
+        //获取配置对象
         Configuration configuration = ms.getConfiguration();
-        StatementHandler handler = configuration.newStatementHandler(wrapper, ms, parameter, rowBounds, null, boundSql);
+
+        //创建StatementHandler对象
+        StatementHandler handler =
+                configuration.
+                        newStatementHandler(
+                                wrapper,
+                                ms,
+                                parameter,
+                                rowBounds,
+                                null,
+                                boundSql);
+
+        //执行预处理和参数处理
         Statement stmt = prepareStatement(handler, ms.getStatementLog());
+
+        //执行查询Cursor，并返回结果
         return handler.<E>queryCursor(stmt);
     }
 
@@ -97,6 +156,7 @@ public class SimpleExecutor extends BaseExecutor {
     }
 
     /**
+     *
      * @param handler
      * @param statementLog
      * @return
@@ -104,6 +164,7 @@ public class SimpleExecutor extends BaseExecutor {
      */
     private Statement prepareStatement(StatementHandler handler, Log statementLog) throws SQLException {
 
+        //
         Statement stmt;
 
         //获取链接对象
@@ -115,6 +176,7 @@ public class SimpleExecutor extends BaseExecutor {
         //处理参数
         handler.parameterize(stmt);
 
+        //
         return stmt;
     }
 

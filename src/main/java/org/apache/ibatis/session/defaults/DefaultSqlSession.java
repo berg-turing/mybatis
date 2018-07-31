@@ -43,6 +43,9 @@ import org.apache.ibatis.session.SqlSession;
  * The default implementation for {@link SqlSession}.
  * Note that this class is not Thread-Safe.
  *
+ * 该类是{@link SqlSession}接口的默认实现
+ * 注意，这个类并不是一个线程安全的类
+ *
  * @author Clinton Begin
  */
 public class DefaultSqlSession implements SqlSession {
@@ -72,6 +75,13 @@ public class DefaultSqlSession implements SqlSession {
      */
     private List<Cursor<?>> cursorList;
 
+    /**
+     * DefaultSqlSession的构造方法
+     *
+     * @param configuration     配置对象
+     * @param executor          执行器
+     * @param autoCommit        是否自动提交
+     */
     public DefaultSqlSession(Configuration configuration, Executor executor, boolean autoCommit) {
         this.configuration = configuration;
         this.executor = executor;
@@ -79,7 +89,14 @@ public class DefaultSqlSession implements SqlSession {
         this.autoCommit = autoCommit;
     }
 
+    /**
+     * DefaultSqlSession的构造方法
+     *
+     * @param configuration     配置对象
+     * @param executor          执行器
+     */
     public DefaultSqlSession(Configuration configuration, Executor executor) {
+        //默认自动提交为false
         this(configuration, executor, false);
     }
 
@@ -92,54 +109,97 @@ public class DefaultSqlSession implements SqlSession {
     public <T> T selectOne(String statement, Object parameter) {
         // Popular vote was to return null on 0 results and throw exception on too many.
         List<T> list = this.<T>selectList(statement, parameter);
+
         if (list.size() == 1) {
+            //查找到的数据只有一条，就返回该条数据
+
             return list.get(0);
         } else if (list.size() > 1) {
+            //如果有多条数据就抛出异常
+
             throw new TooManyResultsException("Expected one result (or null) to be returned by selectOne(), but found: " + list.size());
         } else {
+            //如果没有找到数据，就返回null
+
             return null;
         }
     }
 
     @Override
-    public <K, V> Map<K, V> selectMap(String statement, String mapKey) {
-        return this.selectMap(statement, null, mapKey, RowBounds.DEFAULT);
+    public <K, V> Map<K, V> selectMap(String statement,
+                                      String mapKey) {
+
+        return this.selectMap(
+                statement,
+                null,
+                mapKey,
+                RowBounds.DEFAULT);
     }
 
     @Override
-    public <K, V> Map<K, V> selectMap(String statement, Object parameter, String mapKey) {
-        return this.selectMap(statement, parameter, mapKey, RowBounds.DEFAULT);
+    public <K, V> Map<K, V> selectMap(String statement,
+                                      Object parameter,
+                                      String mapKey) {
+
+        return this.selectMap(
+                statement,
+                parameter,
+                mapKey,
+                RowBounds.DEFAULT);
     }
 
     @Override
-    public <K, V> Map<K, V> selectMap(String statement, Object parameter, String mapKey, RowBounds rowBounds) {
+    public <K, V> Map<K, V> selectMap(String statement,
+                                      Object parameter,
+                                      String mapKey,
+                                      RowBounds rowBounds) {
+
         final List<? extends V> list = selectList(statement, parameter, rowBounds);
-        final DefaultMapResultHandler<K, V> mapResultHandler = new DefaultMapResultHandler<K, V>(mapKey,
-                configuration.getObjectFactory(), configuration.getObjectWrapperFactory(), configuration.getReflectorFactory());
+
+        final DefaultMapResultHandler<K, V> mapResultHandler =
+                new DefaultMapResultHandler<K, V>(
+                        mapKey,
+                        configuration.getObjectFactory(),
+                        configuration.getObjectWrapperFactory(),
+                        configuration.getReflectorFactory());
+
         final DefaultResultContext<V> context = new DefaultResultContext<V>();
+
         for (V o : list) {
             context.nextResultObject(o);
             mapResultHandler.handleResult(context);
         }
+
         return mapResultHandler.getMappedResults();
     }
 
     @Override
     public <T> Cursor<T> selectCursor(String statement) {
+
         return selectCursor(statement, null);
     }
 
     @Override
-    public <T> Cursor<T> selectCursor(String statement, Object parameter) {
+    public <T> Cursor<T> selectCursor(String statement,
+                                      Object parameter) {
+
         return selectCursor(statement, parameter, RowBounds.DEFAULT);
     }
 
     @Override
-    public <T> Cursor<T> selectCursor(String statement, Object parameter, RowBounds rowBounds) {
+    public <T> Cursor<T> selectCursor(String statement,
+                                      Object parameter,
+                                      RowBounds rowBounds) {
+
+        //所有的selectCursor都集中在了该方法中
+
         try {
             MappedStatement ms = configuration.getMappedStatement(statement);
+
             Cursor<T> cursor = executor.queryCursor(ms, wrapCollection(parameter), rowBounds);
+
             registerCursor(cursor);
+
             return cursor;
         } catch (Exception e) {
             throw ExceptionFactory.wrapException("Error querying database.  Cause: " + e, e);
@@ -150,23 +210,37 @@ public class DefaultSqlSession implements SqlSession {
 
     @Override
     public <E> List<E> selectList(String statement) {
+
         return this.selectList(statement, null);
     }
 
     @Override
     public <E> List<E> selectList(String statement, Object parameter) {
+
         return this.selectList(statement, parameter, RowBounds.DEFAULT);
     }
 
     @Override
-    public <E> List<E> selectList(String statement, Object parameter, RowBounds rowBounds) {
+    public <E> List<E> selectList(String statement,
+                                  Object parameter,
+                                  RowBounds rowBounds) {
+        //所有的普通查询最终都集中在了该查询中
+        //  无论是
+        //      selectOne
+        //      selectMap
+        //      selectLst
+
         try {
 
             //获取mappedStatement对象
             MappedStatement ms = configuration.getMappedStatement(statement);
 
             //执行并返回结果
-            return executor.query(ms, wrapCollection(parameter), rowBounds, Executor.NO_RESULT_HANDLER);
+            return executor.query(
+                    ms,
+                    wrapCollection(parameter),
+                    rowBounds,
+                    Executor.NO_RESULT_HANDLER);
         } catch (Exception e) {
 
             throw ExceptionFactory.wrapException("Error querying database.  Cause: " + e, e);
@@ -177,20 +251,35 @@ public class DefaultSqlSession implements SqlSession {
     }
 
     @Override
-    public void select(String statement, Object parameter, ResultHandler handler) {
+    public void select(String statement,
+                       Object parameter,
+                       ResultHandler handler) {
+
         select(statement, parameter, RowBounds.DEFAULT, handler);
     }
 
     @Override
-    public void select(String statement, ResultHandler handler) {
+    public void select(String statement,
+                       ResultHandler handler) {
+
         select(statement, null, RowBounds.DEFAULT, handler);
     }
 
     @Override
-    public void select(String statement, Object parameter, RowBounds rowBounds, ResultHandler handler) {
+    public void select(String statement,
+                       Object parameter,
+                       RowBounds rowBounds,
+                       ResultHandler handler) {
+
         try {
+
             MappedStatement ms = configuration.getMappedStatement(statement);
-            executor.query(ms, wrapCollection(parameter), rowBounds, handler);
+
+            executor.query(
+                    ms,
+                    wrapCollection(parameter),
+                    rowBounds,
+                    handler);
         } catch (Exception e) {
             throw ExceptionFactory.wrapException("Error querying database.  Cause: " + e, e);
         } finally {
@@ -200,24 +289,31 @@ public class DefaultSqlSession implements SqlSession {
 
     @Override
     public int insert(String statement) {
+
         return insert(statement, null);
     }
 
     @Override
     public int insert(String statement, Object parameter) {
+
         return update(statement, parameter);
     }
 
     @Override
     public int update(String statement) {
+
         return update(statement, null);
     }
 
     @Override
     public int update(String statement, Object parameter) {
+
         try {
+            //更新之后，数据就变脏了
             dirty = true;
+
             MappedStatement ms = configuration.getMappedStatement(statement);
+
             return executor.update(ms, wrapCollection(parameter));
         } catch (Exception e) {
             throw ExceptionFactory.wrapException("Error updating database.  Cause: " + e, e);
@@ -228,11 +324,14 @@ public class DefaultSqlSession implements SqlSession {
 
     @Override
     public int delete(String statement) {
+
         return update(statement, null);
     }
 
     @Override
-    public int delete(String statement, Object parameter) {
+    public int delete(String statement,
+                      Object parameter) {
+
         return update(statement, parameter);
     }
 
@@ -243,8 +342,12 @@ public class DefaultSqlSession implements SqlSession {
 
     @Override
     public void commit(boolean force) {
+
         try {
+            //提交事务
             executor.commit(isCommitOrRollbackRequired(force));
+
+            //不脏了
             dirty = false;
         } catch (Exception e) {
             throw ExceptionFactory.wrapException("Error committing transaction.  Cause: " + e, e);
@@ -260,8 +363,13 @@ public class DefaultSqlSession implements SqlSession {
 
     @Override
     public void rollback(boolean force) {
+
         try {
+
+            //回滚
             executor.rollback(isCommitOrRollbackRequired(force));
+
+            //不脏了
             dirty = false;
         } catch (Exception e) {
             throw ExceptionFactory.wrapException("Error rolling back transaction.  Cause: " + e, e);
@@ -273,6 +381,7 @@ public class DefaultSqlSession implements SqlSession {
     @Override
     public List<BatchResult> flushStatements() {
         try {
+
             return executor.flushStatements();
         } catch (Exception e) {
             throw ExceptionFactory.wrapException("Error flushing statements.  Cause: " + e, e);
@@ -284,6 +393,7 @@ public class DefaultSqlSession implements SqlSession {
     @Override
     public void close() {
         try {
+
             executor.close(isCommitOrRollbackRequired(false));
             closeCursors();
             dirty = false;
@@ -293,6 +403,7 @@ public class DefaultSqlSession implements SqlSession {
     }
 
     private void closeCursors() {
+
         if (cursorList != null && cursorList.size() != 0) {
             for (Cursor<?> cursor : cursorList) {
                 try {
@@ -329,30 +440,59 @@ public class DefaultSqlSession implements SqlSession {
         executor.clearLocalCache();
     }
 
+    /**
+     * 注册游标
+     *
+     * @param cursor    游标对象
+     * @param <T>       结果值的泛型
+     */
     private <T> void registerCursor(Cursor<T> cursor) {
+
         if (cursorList == null) {
             cursorList = new ArrayList<Cursor<?>>();
         }
+
         cursorList.add(cursor);
     }
 
+    /**
+     * 是否有提交或者回滚的需要
+     *
+     * @param force     是否强制性要求
+     * @return          返回判断结果
+     */
     private boolean isCommitOrRollbackRequired(boolean force) {
+
         return (!autoCommit && dirty) || force;
     }
 
+    /**
+     * 包装集合对象
+     *
+     * @param object    传入的对象
+     * @return          包装之后的对象
+     */
     private Object wrapCollection(final Object object) {
+
         if (object instanceof Collection) {
             StrictMap<Object> map = new StrictMap<Object>();
+
             map.put("collection", object);
+
             if (object instanceof List) {
+
                 map.put("list", object);
             }
+
             return map;
         } else if (object != null && object.getClass().isArray()) {
+
             StrictMap<Object> map = new StrictMap<Object>();
             map.put("array", object);
+
             return map;
         }
+
         return object;
     }
 

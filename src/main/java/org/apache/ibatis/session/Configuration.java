@@ -763,8 +763,10 @@ public class Configuration {
     }
 
     /**
-     * @param executor
-     * @param mappedStatement
+     * 创建StatementHandler对象
+     *
+     * @param executor          执行器
+     * @param mappedStatement   MappedStatement对象
      * @param parameterObject
      * @param rowBounds
      * @param resultHandler

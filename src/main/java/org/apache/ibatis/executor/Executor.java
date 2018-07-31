@@ -34,6 +34,9 @@ import org.apache.ibatis.transaction.Transaction;
  */
 public interface Executor {
 
+    /**
+     * 没有结果处理器的默认值
+     */
     ResultHandler NO_RESULT_HANDLER = null;
 
     /**
@@ -42,32 +45,124 @@ public interface Executor {
      * @param ms                MappedStatement对象
      * @param parameter         处理之后的参数对象
      * @return                  处理结果影响的数据的条数
-     * @throws SQLException     SQL异常
+     * @throws SQLException     SQL语句执行过程中的异常
      */
-    int update(MappedStatement ms, Object parameter) throws SQLException;
+    int update(MappedStatement ms,
+               Object parameter) throws SQLException;
 
-    <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey cacheKey, BoundSql boundSql) throws SQLException;
+    /**
+     * 执行普通SQL查询数据
+     *
+     * @param ms                MappedStatement对象
+     * @param parameter         处理之后的参数对象
+     * @param rowBounds         分页对象
+     * @param resultHandler     结果处理器对象
+     * @param cacheKey          缓存的key
+     * @param boundSql          BoundSql对象
+     * @param <E>               当前操作的数据的泛型
+     * @return                  查询结果
+     * @throws SQLException     SQL语句执行过程中的异常
+     */
+    <E> List<E> query(MappedStatement ms,
+                      Object parameter,
+                      RowBounds rowBounds,
+                      ResultHandler resultHandler,
+                      CacheKey cacheKey,
+                      BoundSql boundSql) throws SQLException;
 
-    <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler) throws SQLException;
+    /**
+     * 执行普通SQL查询数据
+     *
+     * @param ms                MappedStatement对象
+     * @param parameter         处理之后的参数对象
+     * @param rowBounds         分页对象
+     * @param resultHandler     结果处理器对象
+     * @param <E>               当前操作的数据的泛型
+     * @return                  查询结果
+     * @throws SQLException     SQL语句执行过程中的异常
+     */
+    <E> List<E> query(MappedStatement ms,
+                      Object parameter,
+                      RowBounds rowBounds,
+                      ResultHandler resultHandler) throws SQLException;
 
-    <E> Cursor<E> queryCursor(MappedStatement ms, Object parameter, RowBounds rowBounds) throws SQLException;
+    /**
+     * 执行Cursor查询
+     *
+     * @param ms                MappedStatement对象
+     * @param parameter         处理之后的参数对象
+     * @param rowBounds         分页对象
+     * @param <E>               当前操作的数据的泛型
+     * @return                  查询结果
+     * @throws SQLException     SQL语句执行过程中的异常
+     */
+    <E> Cursor<E> queryCursor(MappedStatement ms,
+                              Object parameter,
+                              RowBounds rowBounds) throws SQLException;
 
+    /**
+     *
+     *
+     * @return
+     * @throws SQLException
+     */
     List<BatchResult> flushStatements() throws SQLException;
 
+    /**
+     *
+     * @param required
+     * @throws SQLException
+     */
     void commit(boolean required) throws SQLException;
 
+    /**
+     *
+     * @param required
+     * @throws SQLException
+     */
     void rollback(boolean required) throws SQLException;
 
-    CacheKey createCacheKey(MappedStatement ms, Object parameterObject, RowBounds rowBounds, BoundSql boundSql);
+    /**
+     * 创建缓存key
+     *
+     * @param ms                    MappedStatement对象
+     * @param parameterObject       处理之后的参数对象
+     * @param rowBounds             分页对象
+     * @param boundSql              BoundSql对象
+     * @return                      生成成功的缓存key对象
+     */
+    CacheKey createCacheKey(MappedStatement ms,
+                            Object parameterObject,
+                            RowBounds rowBounds,
+                            BoundSql boundSql);
 
-    boolean isCached(MappedStatement ms, CacheKey key);
+    /**
+     *
+     * @param ms
+     * @param key
+     * @return
+     */
+    boolean isCached(MappedStatement ms,
+                     CacheKey key);
 
     /**
      * 清理本地缓存
      */
     void clearLocalCache();
 
-    void deferLoad(MappedStatement ms, MetaObject resultObject, String property, CacheKey key, Class<?> targetType);
+    /**
+     *
+     * @param ms
+     * @param resultObject
+     * @param property
+     * @param key
+     * @param targetType
+     */
+    void deferLoad(MappedStatement ms,
+                   MetaObject resultObject,
+                   String property,
+                   CacheKey key,
+                   Class<?> targetType);
 
     /**
      * 获取事务对象

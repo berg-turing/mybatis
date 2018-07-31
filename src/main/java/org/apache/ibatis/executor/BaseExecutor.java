@@ -45,6 +45,8 @@ import org.apache.ibatis.transaction.Transaction;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
 /**
+ * 基本执行器，封装了执行器的通用操作
+ *
  * @author Clinton Begin
  */
 public abstract class BaseExecutor implements Executor {
@@ -70,7 +72,7 @@ public abstract class BaseExecutor implements Executor {
     protected ConcurrentLinkedQueue<DeferredLoad> deferredLoads;
 
     /**
-     *
+     * 本地缓存
      */
     protected PerpetualCache localCache;
 
@@ -108,13 +110,13 @@ public abstract class BaseExecutor implements Executor {
         //
         this.deferredLoads = new ConcurrentLinkedQueue<DeferredLoad>();
 
-        //
+        //创建本地缓存对象
         this.localCache = new PerpetualCache("LocalCache");
 
         //
         this.localOutputParameterCache = new PerpetualCache("LocalOutputParameterCache");
 
-        //是否关闭为false
+        //执行器是否关闭为false
         this.closed = false;
 
         //配置对象
@@ -170,7 +172,7 @@ public abstract class BaseExecutor implements Executor {
     @Override
     public int update(MappedStatement ms, Object parameter) throws SQLException {
 
-
+        //
         ErrorContext.instance().resource(ms.getResource()).activity("executing an update").object(ms.getId());
 
         //已经关闭则不执行
@@ -205,7 +207,10 @@ public abstract class BaseExecutor implements Executor {
     }
 
     @Override
-    public <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler) throws SQLException {
+    public <E> List<E> query(MappedStatement ms,
+                             Object parameter,
+                             RowBounds rowBounds,
+                             ResultHandler resultHandler) throws SQLException {
 
         //获取sql
         BoundSql boundSql = ms.getBoundSql(parameter);
@@ -219,7 +224,12 @@ public abstract class BaseExecutor implements Executor {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
+    public <E> List<E> query(MappedStatement ms,
+                             Object parameter,
+                             RowBounds rowBounds,
+                             ResultHandler resultHandler,
+                             CacheKey key,
+                             BoundSql boundSql) throws SQLException {
 
         //
         ErrorContext.instance().resource(ms.getResource()).activity("executing a query").object(ms.getId());
@@ -401,18 +411,70 @@ public abstract class BaseExecutor implements Executor {
         }
     }
 
-    protected abstract int doUpdate(MappedStatement ms, Object parameter)
+
+
+
+    //最终最为基础的三个操作
+    //其他所有的操作(除了特殊的操作)都是基于这三个操作的
+
+    /**
+     * 更新操作
+     *
+     * @param ms        MappedStatement对象
+     * @param parameter 处理之后的参数对象
+     * @return 更新影响的行数
+     * @throws SQLException SQL语句执行异常
+     */
+    protected abstract int doUpdate(MappedStatement ms,
+                                    Object parameter)
             throws SQLException;
+
+    /**
+     * 查询操作
+     *
+     * @param ms            MappedStatement对象
+     * @param parameter     处理之后的参数对象
+     * @param rowBounds     分页对象
+     * @param resultHandler 结果处理器
+     * @param boundSql      Sql语句对象
+     * @param <E>           查询结果的泛型
+     * @return 查询的结果
+     * @throws SQLException SQL语句执行异常
+     */
+    protected abstract <E> List<E> doQuery(MappedStatement ms,
+                                           Object parameter,
+                                           RowBounds rowBounds,
+                                           ResultHandler resultHandler,
+                                           BoundSql boundSql)
+            throws SQLException;
+
+    /**
+     * 游标查询
+     *
+     * @param ms        MappedStatement对象
+     * @param parameter 处理之后的参数对象
+     * @param rowBounds 分页对象
+     * @param boundSql  Sql语句对象
+     * @param <E>       查询结果的泛型
+     * @return 查询的结果
+     * @throws SQLException SQL语句执行异常
+     */
+    protected abstract <E> Cursor<E> doQueryCursor(MappedStatement ms,
+                                                   Object parameter,
+                                                   RowBounds rowBounds,
+                                                   BoundSql boundSql)
+            throws SQLException;
+
+
+
+
 
     protected abstract List<BatchResult> doFlushStatements(boolean isRollback)
             throws SQLException;
 
-    protected abstract <E> List<E> doQuery(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql)
-            throws SQLException;
-
-    protected abstract <E> Cursor<E> doQueryCursor(MappedStatement ms, Object parameter, RowBounds rowBounds, BoundSql boundSql)
-            throws SQLException;
-
+    /**
+     * @param statement
+     */
     protected void closeStatement(Statement statement) {
         if (statement != null) {
             try {
@@ -529,17 +591,56 @@ public abstract class BaseExecutor implements Executor {
         this.wrapper = wrapper;
     }
 
+    /**
+     *
+     */
     private static class DeferredLoad {
 
+        /**
+         *
+         */
         private final MetaObject resultObject;
+
+        /**
+         *
+         */
         private final String property;
+
+        /**
+         *
+         */
         private final Class<?> targetType;
+
+        /**
+         *
+         */
         private final CacheKey key;
+
+        /**
+         *
+         */
         private final PerpetualCache localCache;
+
+        /**
+         *
+         */
         private final ObjectFactory objectFactory;
+
+        /**
+         *
+         */
         private final ResultExtractor resultExtractor;
 
         // issue #781
+
+        /**
+         * @param resultObject
+         * @param property
+         * @param key
+         * @param localCache
+         * @param configuration
+         * @param targetType
+         */
         public DeferredLoad(MetaObject resultObject,
                             String property,
                             CacheKey key,
@@ -555,10 +656,16 @@ public abstract class BaseExecutor implements Executor {
             this.targetType = targetType;
         }
 
+        /**
+         * @return
+         */
         public boolean canLoad() {
             return localCache.getObject(key) != null && localCache.getObject(key) != EXECUTION_PLACEHOLDER;
         }
 
+        /**
+         *
+         */
         public void load() {
             @SuppressWarnings("unchecked")
             // we suppose we get back a List

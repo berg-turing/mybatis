@@ -38,21 +38,26 @@ import java.util.concurrent.locks.ReadWriteLock;
  *
  * @author Clinton Begin
  */
-
 public interface Cache {
 
     /**
+     * Get the identifier of this cache
+     *
      * @return The identifier of this cache
      */
     String getId();
 
     /**
+     * Put a object to this cache
+     *
      * @param key Can be any object but usually it is a {@link CacheKey}
      * @param value The result of a select.
      */
     void putObject(Object key, Object value);
 
     /**
+     * Get object by key
+     *
      * @param key The key
      * @return The object stored in the cache.
      */

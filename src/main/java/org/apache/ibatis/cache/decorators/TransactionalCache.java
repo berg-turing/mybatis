@@ -38,11 +38,29 @@ import org.apache.ibatis.logging.LogFactory;
  */
 public class TransactionalCache implements Cache {
 
+    /**
+     * 日志打印对象
+     */
     private static final Log log = LogFactory.getLog(TransactionalCache.class);
 
+    /**
+     *
+     */
     private final Cache delegate;
+
+    /**
+     *
+     */
     private boolean clearOnCommit;
+
+    /**
+     *
+     */
     private final Map<Object, Object> entriesToAddOnCommit;
+
+    /**
+     *
+     */
     private final Set<Object> entriesMissedInCache;
 
     public TransactionalCache(Cache delegate) {
