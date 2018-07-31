@@ -466,14 +466,20 @@ public abstract class BaseExecutor implements Executor {
             throws SQLException;
 
 
-
-
-
+    /**
+     * 刷新Statement对象
+     *
+     * @param isRollback    是否回滚
+     * @return              批量处理的结果，只有批处理的执行器才会返回数据
+     * @throws SQLException Sql语句异常
+     */
     protected abstract List<BatchResult> doFlushStatements(boolean isRollback)
             throws SQLException;
 
     /**
-     * @param statement
+     * 关闭Statement对象
+     *
+     * @param statement 需要关闭的Statement对象
      */
     protected void closeStatement(Statement statement) {
         if (statement != null) {
@@ -580,8 +586,10 @@ public abstract class BaseExecutor implements Executor {
         Connection connection = transaction.getConnection();
 
         if (statementLog.isDebugEnabled()) {
+
             return ConnectionLogger.newInstance(connection, statementLog, queryStack);
         } else {
+
             return connection;
         }
     }

@@ -39,59 +39,99 @@ import org.apache.ibatis.type.JdbcType;
  */
 public class CallableStatementHandler extends BaseStatementHandler {
 
-    public CallableStatementHandler(Executor executor, MappedStatement mappedStatement, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) {
+    /**
+     * CallableStatementHandler的构造函数
+     *
+     * @param executor          执行器
+     * @param mappedStatement   MappedStatement对象
+     * @param parameter         参数对象
+     * @param rowBounds         分页对象
+     * @param resultHandler     结果处理器
+     * @param boundSql          Sql语句对象
+     */
+    public CallableStatementHandler(Executor executor,
+                                    MappedStatement mappedStatement,
+                                    Object parameter,
+                                    RowBounds rowBounds,
+                                    ResultHandler resultHandler,
+                                    BoundSql boundSql) {
+
+        //调用父类的构造函数
         super(executor, mappedStatement, parameter, rowBounds, resultHandler, boundSql);
     }
 
     @Override
     public int update(Statement statement) throws SQLException {
+
         CallableStatement cs = (CallableStatement) statement;
+
         cs.execute();
+
         int rows = cs.getUpdateCount();
+
         Object parameterObject = boundSql.getParameterObject();
         KeyGenerator keyGenerator = mappedStatement.getKeyGenerator();
         keyGenerator.processAfter(executor, mappedStatement, cs, parameterObject);
+
         resultSetHandler.handleOutputParameters(cs);
+
         return rows;
     }
 
     @Override
     public void batch(Statement statement) throws SQLException {
+
         CallableStatement cs = (CallableStatement) statement;
+
         cs.addBatch();
     }
 
     @Override
-    public <E> List<E> query(Statement statement, ResultHandler resultHandler) throws SQLException {
+    public <E> List<E> query(Statement statement,
+                             ResultHandler resultHandler) throws SQLException {
+
         CallableStatement cs = (CallableStatement) statement;
+
         cs.execute();
+
         List<E> resultList = resultSetHandler.<E>handleResultSets(cs);
         resultSetHandler.handleOutputParameters(cs);
+
         return resultList;
     }
 
     @Override
     public <E> Cursor<E> queryCursor(Statement statement) throws SQLException {
+
         CallableStatement cs = (CallableStatement) statement;
+
         cs.execute();
+
         Cursor<E> resultList = resultSetHandler.<E>handleCursorResultSets(cs);
         resultSetHandler.handleOutputParameters(cs);
+
         return resultList;
     }
 
     @Override
     protected Statement instantiateStatement(Connection connection) throws SQLException {
+
         String sql = boundSql.getSql();
+
         if (mappedStatement.getResultSetType() != null) {
+
             return connection.prepareCall(sql, mappedStatement.getResultSetType().getValue(), ResultSet.CONCUR_READ_ONLY);
         } else {
+
             return connection.prepareCall(sql);
         }
     }
 
     @Override
     public void parameterize(Statement statement) throws SQLException {
+
         registerOutputParameters((CallableStatement) statement);
+
         parameterHandler.setParameters((CallableStatement) statement);
     }
 

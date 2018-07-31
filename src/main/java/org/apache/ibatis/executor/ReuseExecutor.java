@@ -34,68 +34,122 @@ import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.transaction.Transaction;
 
 /**
+ * 可重用的执行器，该执行器会缓存Statement对象
+ *
  * @author Clinton Begin
  */
 public class ReuseExecutor extends BaseExecutor {
 
     /**
      * statement map对象
+     * 用于缓存Statement对象的
      */
     private final Map<String, Statement> statementMap = new HashMap<String, Statement>();
 
     /**
-     * @param configuration
-     * @param transaction
+     * @param configuration     配置对象
+     * @param transaction       事务对象
      */
-    public ReuseExecutor(Configuration configuration, Transaction transaction) {
+    public ReuseExecutor(Configuration configuration,
+                         Transaction transaction) {
+
         super(configuration, transaction);
     }
 
     @Override
-    public int doUpdate(MappedStatement ms, Object parameter) throws SQLException {
+    public int doUpdate(MappedStatement ms,
+                        Object parameter) throws SQLException {
 
+        //获取配置对象
         Configuration configuration = ms.getConfiguration();
 
-        StatementHandler handler = configuration.newStatementHandler(this, ms, parameter, RowBounds.DEFAULT, null, null);
+        //创建StatementHandler对象
+        StatementHandler handler =
+                configuration.
+                        newStatementHandler(
+                                this,
+                                ms,
+                                parameter,
+                                RowBounds.DEFAULT,
+                                null,
+                                null);
 
+        //预处理，并设置参数
         Statement stmt = prepareStatement(handler, ms.getStatementLog());
 
+        //返回处理结果
         return handler.update(stmt);
     }
 
     @Override
-    public <E> List<E> doQuery(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) throws SQLException {
+    public <E> List<E> doQuery(MappedStatement ms,
+                               Object parameter,
+                               RowBounds rowBounds,
+                               ResultHandler resultHandler,
+                               BoundSql boundSql) throws SQLException {
 
+        //获取配置对象
         Configuration configuration = ms.getConfiguration();
 
-        StatementHandler handler = configuration.newStatementHandler(wrapper, ms, parameter, rowBounds, resultHandler, boundSql);
+        //创建StatementHandler
+        StatementHandler handler =
+                configuration.
+                        newStatementHandler(
+                                wrapper,
+                                ms,
+                                parameter,
+                                rowBounds,
+                                resultHandler,
+                                boundSql);
 
+        //预处理，并设置参数
         Statement stmt = prepareStatement(handler, ms.getStatementLog());
 
+        //返回查询结果
         return handler.<E>query(stmt, resultHandler);
     }
 
     @Override
-    protected <E> Cursor<E> doQueryCursor(MappedStatement ms, Object parameter, RowBounds rowBounds, BoundSql boundSql) throws SQLException {
+    protected <E> Cursor<E> doQueryCursor(MappedStatement ms,
+                                          Object parameter,
+                                          RowBounds rowBounds,
+                                          BoundSql boundSql) throws SQLException {
 
+        //获取配置对象
         Configuration configuration = ms.getConfiguration();
 
-        StatementHandler handler = configuration.newStatementHandler(wrapper, ms, parameter, rowBounds, null, boundSql);
+        //创建SatementHandler对象
+        StatementHandler handler =
+                configuration.
+                        newStatementHandler(
+                                wrapper,
+                                ms,
+                                parameter,
+                                rowBounds,
+                                null,
+                                boundSql);
 
+        //预处理，并设置参数
         Statement stmt = prepareStatement(handler, ms.getStatementLog());
 
+        //返回查询结果
         return handler.<E>queryCursor(stmt);
     }
 
     @Override
     public List<BatchResult> doFlushStatements(boolean isRollback) throws SQLException {
 
+        //循环关闭Statement对象
         for (Statement stmt : statementMap.values()) {
+
+            //关闭Statement对象
             closeStatement(stmt);
         }
 
+        //清空Statement的Map对象
         statementMap.clear();
 
+        //返回空值
         return Collections.emptyList();
     }
 
@@ -139,7 +193,7 @@ public class ReuseExecutor extends BaseExecutor {
         //处理参数
         handler.parameterize(stmt);
 
-        //返回Statment对象
+        //返回Statement对象
         return stmt;
     }
 

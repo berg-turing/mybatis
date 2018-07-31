@@ -32,28 +32,54 @@ import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
 /**
+ * PrepareStatementHandler
+ *
  * @author Clinton Begin
  */
 public class PreparedStatementHandler extends BaseStatementHandler {
 
-    public PreparedStatementHandler(Executor executor, MappedStatement mappedStatement, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) {
+    /**
+     * PrepareStatementHandler的构造函数
+     *
+     * @param executor          执行器
+     * @param mappedStatement   MappedStatement对象
+     * @param parameter         参数对象
+     * @param rowBounds         分页对象
+     * @param resultHandler     结果处理器
+     * @param boundSql          Sql语句对象
+     */
+    public PreparedStatementHandler(Executor executor,
+                                    MappedStatement mappedStatement,
+                                    Object parameter,
+                                    RowBounds rowBounds,
+                                    ResultHandler resultHandler,
+                                    BoundSql boundSql) {
+
+        //调用父类的构造函数
         super(executor, mappedStatement, parameter, rowBounds, resultHandler, boundSql);
     }
 
     @Override
     public int update(Statement statement) throws SQLException {
+
         PreparedStatement ps = (PreparedStatement) statement;
+
         ps.execute();
+
         int rows = ps.getUpdateCount();
+
         Object parameterObject = boundSql.getParameterObject();
         KeyGenerator keyGenerator = mappedStatement.getKeyGenerator();
         keyGenerator.processAfter(executor, mappedStatement, ps, parameterObject);
+
         return rows;
     }
 
     @Override
     public void batch(Statement statement) throws SQLException {
+
         PreparedStatement ps = (PreparedStatement) statement;
+
         ps.addBatch();
     }
 
@@ -71,8 +97,11 @@ public class PreparedStatementHandler extends BaseStatementHandler {
 
     @Override
     public <E> Cursor<E> queryCursor(Statement statement) throws SQLException {
+
         PreparedStatement ps = (PreparedStatement) statement;
+
         ps.execute();
+
         return resultSetHandler.<E>handleCursorResultSets(ps);
     }
 
@@ -105,6 +134,7 @@ public class PreparedStatementHandler extends BaseStatementHandler {
 
     @Override
     public void parameterize(Statement statement) throws SQLException {
+
         parameterHandler.setParameters((PreparedStatement) statement);
     }
 

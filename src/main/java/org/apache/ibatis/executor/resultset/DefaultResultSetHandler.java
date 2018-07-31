@@ -69,41 +69,112 @@ import java.util.Set;
  */
 public class DefaultResultSetHandler implements ResultSetHandler {
 
+    /**
+     *
+     */
     private static final Object DEFERED = new Object();
 
+    /**
+     * 执行器
+     */
     private final Executor executor;
+
+    /**
+     * 配置对象
+     */
     private final Configuration configuration;
+
+    /**
+     * MappedStatement对象
+     */
     private final MappedStatement mappedStatement;
+
+    /**
+     * 分页对象
+     */
     private final RowBounds rowBounds;
+
+    /**
+     * 参数处理器
+     */
     private final ParameterHandler parameterHandler;
+
+    /**
+     * 结果处理器
+     */
     private final ResultHandler<?> resultHandler;
+
+    /**
+     * Sql语句对象
+     */
     private final BoundSql boundSql;
+
+    /**
+     * 类型处理器注册对象
+     */
     private final TypeHandlerRegistry typeHandlerRegistry;
+
+    /**
+     * 对象工厂
+     */
     private final ObjectFactory objectFactory;
+
+    /**
+     *
+     */
     private final ReflectorFactory reflectorFactory;
 
-    // nested resultmaps
+    /**
+     * nested resultmaps
+     */
     private final Map<CacheKey, Object> nestedResultObjects = new HashMap<CacheKey, Object>();
+
+    /**
+     *
+     */
     private final Map<String, Object> ancestorObjects = new HashMap<String, Object>();
+
+    /**
+     *
+     */
     private Object previousRowValue;
 
-    // multiple resultsets
+    /**
+     * multiple resultsets
+     */
     private final Map<String, ResultMapping> nextResultMaps = new HashMap<String, ResultMapping>();
+
+    /**
+     *
+     */
     private final Map<CacheKey, List<PendingRelation>> pendingRelations = new HashMap<CacheKey, List<PendingRelation>>();
 
-    // Cached Automappings
+    /**
+     * Cached Automappings
+     */
     private final Map<String, List<UnMappedColumnAutoMapping>> autoMappingsCache = new HashMap<String, List<UnMappedColumnAutoMapping>>();
 
-    // temporary marking flag that indicate using constructor mapping (use field to reduce memory usage)
+    /**
+     * temporary marking flag that indicate using constructor mapping (use field to reduce memory usage)
+     */
     private boolean useConstructorMappings;
 
+    /**
+     *
+     */
     private final PrimitiveTypes primitiveTypes;
 
+    /**
+     *
+     */
     private static class PendingRelation {
         public MetaObject metaObject;
         public ResultMapping propertyMapping;
     }
 
+    /**
+     *
+     */
     private static class UnMappedColumnAutoMapping {
         private final String column;
         private final String property;
@@ -118,8 +189,22 @@ public class DefaultResultSetHandler implements ResultSetHandler {
         }
     }
 
-    public DefaultResultSetHandler(Executor executor, MappedStatement mappedStatement, ParameterHandler parameterHandler, ResultHandler<?> resultHandler, BoundSql boundSql,
+    /**
+     *
+     * @param executor
+     * @param mappedStatement
+     * @param parameterHandler
+     * @param resultHandler
+     * @param boundSql
+     * @param rowBounds
+     */
+    public DefaultResultSetHandler(Executor executor,
+                                   MappedStatement mappedStatement,
+                                   ParameterHandler parameterHandler,
+                                   ResultHandler<?> resultHandler,
+                                   BoundSql boundSql,
                                    RowBounds rowBounds) {
+
         this.executor = executor;
         this.configuration = mappedStatement.getConfiguration();
         this.mappedStatement = mappedStatement;
@@ -133,10 +218,13 @@ public class DefaultResultSetHandler implements ResultSetHandler {
         this.primitiveTypes = new PrimitiveTypes();
     }
 
-    //
-    // HANDLE OUTPUT PARAMETER
-    //
 
+    /**
+     * HANDLE OUTPUT PARAMETER
+     *
+     * @param cs
+     * @throws SQLException
+     */
     @Override
     public void handleOutputParameters(CallableStatement cs) throws SQLException {
         final Object parameterObject = parameterHandler.getParameterObject();
@@ -155,6 +243,13 @@ public class DefaultResultSetHandler implements ResultSetHandler {
         }
     }
 
+    /**
+     *
+     * @param rs
+     * @param parameterMapping
+     * @param metaParam
+     * @throws SQLException
+     */
     private void handleRefCursorOutputParameter(ResultSet rs, ParameterMapping parameterMapping, MetaObject metaParam) throws SQLException {
         if (rs == null) {
             return;

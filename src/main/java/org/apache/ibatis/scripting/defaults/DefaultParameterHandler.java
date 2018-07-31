@@ -38,14 +38,42 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
  */
 public class DefaultParameterHandler implements ParameterHandler {
 
+    /**
+     * 类型处理器注册对象
+     */
     private final TypeHandlerRegistry typeHandlerRegistry;
 
+    /**
+     * MappedStatement对象
+     */
     private final MappedStatement mappedStatement;
+
+    /**
+     * 参数对象
+     */
     private final Object parameterObject;
+
+    /**
+     * Sql语句对象
+     */
     private final BoundSql boundSql;
+
+    /**
+     * 配置对象
+     */
     private final Configuration configuration;
 
-    public DefaultParameterHandler(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql) {
+    /**
+     * DefaultParameterHandler构造函数
+     *
+     * @param mappedStatement       MappedStatement对象
+     * @param parameterObject       参数对象
+     * @param boundSql              Sql语句对象
+     */
+    public DefaultParameterHandler(MappedStatement mappedStatement,
+                                   Object parameterObject,
+                                   BoundSql boundSql) {
+
         this.mappedStatement = mappedStatement;
         this.configuration = mappedStatement.getConfiguration();
         this.typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
@@ -55,11 +83,13 @@ public class DefaultParameterHandler implements ParameterHandler {
 
     @Override
     public Object getParameterObject() {
+
         return parameterObject;
     }
 
     @Override
     public void setParameters(PreparedStatement ps) {
+
         ErrorContext.instance().activity("setting parameters").object(mappedStatement.getParameterMap().getId());
 
         //获取参数映射对象集合
@@ -78,30 +108,41 @@ public class DefaultParameterHandler implements ParameterHandler {
                     Object value;
                     String propertyName = parameterMapping.getProperty();
 
-                    if (boundSql.hasAdditionalParameter(propertyName)) { // issue #448 ask first for additional params
+                    // issue #448 ask first for additional params
+                    if (boundSql.hasAdditionalParameter(propertyName)) {
+                        //如果参数中有附件的值满足条件，就使用附加值
 
                         value = boundSql.getAdditionalParameter(propertyName);
                     } else if (parameterObject == null) {
+                        //如果参数对象为空，则值为空
 
                         value = null;
                     } else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
+                        //如果参数对象有对应的类型处理器，值就为该参数对象
 
                         value = parameterObject;
                     } else {
+                        //否则就从参数对象中寻找对应的属性字段
 
                         MetaObject metaObject = configuration.newMetaObject(parameterObject);
                         value = metaObject.getValue(propertyName);
                     }
 
+                    //获取当前设置的参数的类型处理器
                     TypeHandler typeHandler = parameterMapping.getTypeHandler();
 
+                    //获取当前设置的参数的JdbcType
                     JdbcType jdbcType = parameterMapping.getJdbcType();
 
+                    //如果参数值为null，并且JdbcType也为null
                     if (value == null && jdbcType == null) {
+
+                        //
                         jdbcType = configuration.getJdbcTypeForNull();
                     }
 
                     try {
+                        //设置参数
                         typeHandler.setParameter(ps, i + 1, value, jdbcType);
                     } catch (TypeException e) {
                         throw new TypeException("Could not set parameters for mapping: " + parameterMapping + ". Cause: " + e, e);

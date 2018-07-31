@@ -32,60 +32,103 @@ import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
 /**
+ * SimpleStatementHandler
+ *
  * @author Clinton Begin
  */
 public class SimpleStatementHandler extends BaseStatementHandler {
 
-    public SimpleStatementHandler(Executor executor, MappedStatement mappedStatement, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) {
+    /**
+     * SimpleStatementHandler的构造函数
+     *
+     * @param executor          执行器
+     * @param mappedStatement   MappedStatement对象
+     * @param parameter         参数对象
+     * @param rowBounds         分页对象
+     * @param resultHandler     结果处理器
+     * @param boundSql          Sql语句对象
+     */
+    public SimpleStatementHandler(Executor executor,
+                                  MappedStatement mappedStatement,
+                                  Object parameter,
+                                  RowBounds rowBounds,
+                                  ResultHandler resultHandler,
+                                  BoundSql boundSql) {
+
+        //调用父类的构造器
         super(executor, mappedStatement, parameter, rowBounds, resultHandler, boundSql);
     }
 
     @Override
     public int update(Statement statement) throws SQLException {
+
+        //获取Sql
         String sql = boundSql.getSql();
+        //参数对象
         Object parameterObject = boundSql.getParameterObject();
+        //主键生成器
         KeyGenerator keyGenerator = mappedStatement.getKeyGenerator();
+        //影响的行数
         int rows;
+
         if (keyGenerator instanceof Jdbc3KeyGenerator) {
+
             statement.execute(sql, Statement.RETURN_GENERATED_KEYS);
             rows = statement.getUpdateCount();
+
             keyGenerator.processAfter(executor, mappedStatement, statement, parameterObject);
         } else if (keyGenerator instanceof SelectKeyGenerator) {
+
             statement.execute(sql);
             rows = statement.getUpdateCount();
+
             keyGenerator.processAfter(executor, mappedStatement, statement, parameterObject);
         } else {
+
             statement.execute(sql);
             rows = statement.getUpdateCount();
         }
+
         return rows;
     }
 
     @Override
     public void batch(Statement statement) throws SQLException {
+
         String sql = boundSql.getSql();
+
         statement.addBatch(sql);
     }
 
     @Override
-    public <E> List<E> query(Statement statement, ResultHandler resultHandler) throws SQLException {
+    public <E> List<E> query(Statement statement,
+                             ResultHandler resultHandler) throws SQLException {
+
         String sql = boundSql.getSql();
+
         statement.execute(sql);
+
         return resultSetHandler.<E>handleResultSets(statement);
     }
 
     @Override
     public <E> Cursor<E> queryCursor(Statement statement) throws SQLException {
+
         String sql = boundSql.getSql();
+
         statement.execute(sql);
+
         return resultSetHandler.<E>handleCursorResultSets(statement);
     }
 
     @Override
     protected Statement instantiateStatement(Connection connection) throws SQLException {
+
         if (mappedStatement.getResultSetType() != null) {
+
             return connection.createStatement(mappedStatement.getResultSetType().getValue(), ResultSet.CONCUR_READ_ONLY);
         } else {
+
             return connection.createStatement();
         }
     }

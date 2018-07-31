@@ -749,16 +749,62 @@ public class Configuration {
         return MetaObject.forObject(object, objectFactory, objectWrapperFactory, reflectorFactory);
     }
 
-    public ParameterHandler newParameterHandler(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql) {
-        ParameterHandler parameterHandler = mappedStatement.getLang().createParameterHandler(mappedStatement, parameterObject, boundSql);
+    /**
+     * 创建ParameterHandler对象
+     *
+     * @param mappedStatement   MappedStatement对象
+     * @param parameterObject   参数对象
+     * @param boundSql          Sql语句对象
+     * @return                  成功创建的参数处理器对象
+     */
+    public ParameterHandler newParameterHandler(MappedStatement mappedStatement,
+                                                Object parameterObject,
+                                                BoundSql boundSql) {
+
+        ParameterHandler parameterHandler =
+                mappedStatement.
+                        getLang().
+                            createParameterHandler(mappedStatement, parameterObject, boundSql);
+
+        //插件链
         parameterHandler = (ParameterHandler) interceptorChain.pluginAll(parameterHandler);
+
+        //返回参数处理器
         return parameterHandler;
     }
 
-    public ResultSetHandler newResultSetHandler(Executor executor, MappedStatement mappedStatement, RowBounds rowBounds, ParameterHandler parameterHandler,
-                                                ResultHandler resultHandler, BoundSql boundSql) {
-        ResultSetHandler resultSetHandler = new DefaultResultSetHandler(executor, mappedStatement, parameterHandler, resultHandler, boundSql, rowBounds);
+    /**
+     * 结果集处理器
+     *
+     * @param executor          执行器
+     * @param mappedStatement   MappedStatement对象
+     * @param rowBounds         分页对象
+     * @param parameterHandler  参数处理器对象
+     * @param resultHandler     结果处理器
+     * @param boundSql          Sql语句对象
+     * @return                  成功创建的结果处理器对象
+     */
+    public ResultSetHandler newResultSetHandler(Executor executor,
+                                                MappedStatement mappedStatement,
+                                                RowBounds rowBounds,
+                                                ParameterHandler parameterHandler,
+                                                ResultHandler resultHandler,
+                                                BoundSql boundSql) {
+
+        //创建结果集处理器
+        ResultSetHandler resultSetHandler =
+                new DefaultResultSetHandler(
+                        executor,
+                        mappedStatement,
+                        parameterHandler,
+                        resultHandler,
+                        boundSql,
+                        rowBounds);
+
+        //插件链
         resultSetHandler = (ResultSetHandler) interceptorChain.pluginAll(resultSetHandler);
+
+        //返回结果集处理器
         return resultSetHandler;
     }
 
@@ -767,18 +813,33 @@ public class Configuration {
      *
      * @param executor          执行器
      * @param mappedStatement   MappedStatement对象
-     * @param parameterObject
-     * @param rowBounds
-     * @param resultHandler
-     * @param boundSql
-     * @return
+     * @param parameterObject   处理后的参数对象
+     * @param rowBounds         分页对象
+     * @param resultHandler     结果处理器
+     * @param boundSql          Sql语句对象
+     * @return                  创建的Statement对象
      */
-    public StatementHandler newStatementHandler(Executor executor, MappedStatement mappedStatement, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) {
+    public StatementHandler newStatementHandler(Executor executor,
+                                                MappedStatement mappedStatement,
+                                                Object parameterObject,
+                                                RowBounds rowBounds,
+                                                ResultHandler resultHandler,
+                                                BoundSql boundSql) {
 
-        StatementHandler statementHandler = new RoutingStatementHandler(executor, mappedStatement, parameterObject, rowBounds, resultHandler, boundSql);
+        //创建StatementHandler
+        StatementHandler statementHandler =
+                new RoutingStatementHandler(
+                        executor,
+                        mappedStatement,
+                        parameterObject,
+                        rowBounds,
+                        resultHandler,
+                        boundSql);
 
+        //插件链
         statementHandler = (StatementHandler) interceptorChain.pluginAll(statementHandler);
 
+        //返回创建的StatementHandler
         return statementHandler;
     }
 

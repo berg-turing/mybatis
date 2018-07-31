@@ -156,15 +156,16 @@ public class SimpleExecutor extends BaseExecutor {
     }
 
     /**
+     * 预处理Statement和设置参数
      *
-     * @param handler
-     * @param statementLog
-     * @return
-     * @throws SQLException
+     * @param handler       StatementHandler
+     * @param statementLog  statementLog
+     * @return              Statement对象
+     * @throws SQLException Sql语句异常
      */
     private Statement prepareStatement(StatementHandler handler, Log statementLog) throws SQLException {
 
-        //
+        //Statement对象
         Statement stmt;
 
         //获取链接对象
@@ -176,7 +177,7 @@ public class SimpleExecutor extends BaseExecutor {
         //处理参数
         handler.parameterize(stmt);
 
-        //
+        //返回Statement对象
         return stmt;
     }
 
