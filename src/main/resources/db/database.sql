@@ -178,3 +178,22 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2018-07-26 11:50:05
+
+
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS count_student;
+
+CREATE PROCEDURE count_student
+  (IN p_student_name VARCHAR(25), OUT count_total INT, OUT exec_date DATE)
+  BEGIN
+    SELECT COUNT(*) INTO count_total
+    FROM student
+    WHERE NAME LIKE CONCAT('%', p_student_name, '%');
+
+    SELECT NOW() INTO exec_date;
+  END;
+$$
+
+DELIMITER ;

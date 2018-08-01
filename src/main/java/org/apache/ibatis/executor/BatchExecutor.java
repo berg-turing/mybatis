@@ -107,14 +107,16 @@ public class BatchExecutor extends BaseExecutor {
             int last = statementList.size() - 1;
             stmt = statementList.get(last);
             applyTransactionTimeout(stmt);
-            handler.parameterize(stmt);//fix Issues 322
+            //fix Issues 322
+            handler.parameterize(stmt);
             BatchResult batchResult = batchResultList.get(last);
             batchResult.addParameterObject(parameterObject);
         } else {
 
             Connection connection = getConnection(ms.getStatementLog());
             stmt = handler.prepare(connection, transaction.getTimeout());
-            handler.parameterize(stmt);    //fix Issues 322
+            //fix Issues 322
+            handler.parameterize(stmt);
             currentSql = sql;
             currentStatement = ms;
             statementList.add(stmt);
@@ -256,7 +258,7 @@ public class BatchExecutor extends BaseExecutor {
             for (Statement stmt : statementList) {
                 closeStatement(stmt);
             }
-            
+
             currentSql = null;
             statementList.clear();
             batchResultList.clear();
