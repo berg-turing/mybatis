@@ -35,4 +35,31 @@
         d.DEPARTMENT_ID = #{departmentId}
     </select>
 
+    <select id="test" parameterType="com.berg.base.xmlmappers.associate.dto.Department"
+            resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseSql">
+            <property name="prefix" value="d"/>
+            <property name="suffix" value=" "/>
+        </include>
+
+        FROM
+        <include refid="TableName"/> d
+
+        <where>
+            <if test="departmentId!=null and departmentId!=0">
+                AND d.DEPARTMENT_ID = #{departmentId}
+            </if>
+            <if test="name!=null">
+                <if test='name.equals("Y")'>
+                    AND 1=1
+                </if>
+                <if test='name.equals("N")'>
+                    AND 2=2
+                </if>
+            </if>
+        </where>
+
+    </select>
+
 </mapper>

@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 public class DepartmentMapperTest {
 
@@ -36,5 +37,22 @@ public class DepartmentMapperTest {
         System.out.println(department);
 
         sqlSession.close();
+    }
+
+    @Test
+    public void test(){
+
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        DepartmentMapper mapper = sqlSession.getMapper(DepartmentMapper.class);
+
+        Department department = new Department();
+
+        department.setName("Y");
+
+        List<Department> test = mapper.test(department);
+
+        System.out.println(test);
+
     }
 }

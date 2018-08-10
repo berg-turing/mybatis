@@ -124,12 +124,12 @@ public class TypeAliasRegistry {
     }
 
     @SuppressWarnings("unchecked")
-    // throws class cast exception as well if types cannot be assigned
     /**
+     * throws class cast exception as well if types cannot be assigned
      * 根据别名获取类型
      *
      * 别名是不区分大小写的
-     *
+     * @param string    类型名
      */
     public <T> Class<T> resolveAlias(String string) {
 

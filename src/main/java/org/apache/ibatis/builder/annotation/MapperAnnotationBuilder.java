@@ -122,9 +122,17 @@ public class MapperAnnotationBuilder {
     public void parse() {
 
         String resource = type.toString();
+
+        //判断是否已经加载了当前的资源
         if (!configuration.isResourceLoaded(resource)) {
+
+            //加载mapper.xml资源
             loadXmlResource();
+
+            //当前资源已经加载
             configuration.addLoadedResource(resource);
+
+            //设置当前的命名空间
             assistant.setCurrentNamespace(type.getName());
             parseCache();
             parseCacheRef();
@@ -159,21 +167,40 @@ public class MapperAnnotationBuilder {
         }
     }
 
+    /**
+     * 加载mapper.xml资源
+     */
     private void loadXmlResource() {
 
         // Spring may not know the real resource name so we check a flag
         // to prevent loading again a resource twice
         // this flag is set at XMLMapperBuilder#bindMapperForNamespace
         if (!configuration.isResourceLoaded("namespace:" + type.getName())) {
+
+            //获取xml文件的路径
             String xmlResource = type.getName().replace('.', '/') + ".xml";
             InputStream inputStream = null;
             try {
+
+                //获取mapper.xml的输入流
                 inputStream = Resources.getResourceAsStream(type.getClassLoader(), xmlResource);
             } catch (IOException e) {
                 // ignore, resource is not required
             }
+
+            //如果输入了存在
             if (inputStream != null) {
-                XMLMapperBuilder xmlParser = new XMLMapperBuilder(inputStream, assistant.getConfiguration(), xmlResource, configuration.getSqlFragments(), type.getName());
+
+                //创建mapper.xml解析对象
+                XMLMapperBuilder xmlParser =
+                        new XMLMapperBuilder(
+                                inputStream,
+                                assistant.getConfiguration(),
+                                xmlResource,
+                                configuration.getSqlFragments(),
+                                type.getName());
+
+                //开始解析mapper.xml
                 xmlParser.parse();
             }
         }

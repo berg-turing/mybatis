@@ -135,6 +135,7 @@ public class XMLMapperBuilder extends BaseBuilder {
 
         if (!configuration.isResourceLoaded(resource)) {
 
+            //解析mapper标签的内容
             configurationElement(parser.evalNode("/mapper"));
 
             configuration.addLoadedResource(resource);
@@ -195,10 +196,19 @@ public class XMLMapperBuilder extends BaseBuilder {
         }
     }
 
+    /**
+     * 创建Statement对象
+     *
+     * @param list  节点对象
+     */
     private void buildStatementFromContext(List<XNode> list) {
+
         if (configuration.getDatabaseId() != null) {
+
+            //
             buildStatementFromContext(list, configuration.getDatabaseId());
         }
+
         buildStatementFromContext(list, null);
     }
 
@@ -259,7 +269,7 @@ public class XMLMapperBuilder extends BaseBuilder {
     }
 
     /**
-     * 解析cache-ref
+     * 解析<cache-ref></cache-ref>标签
      *
      * @param context cache-ref节点对象
      */
@@ -267,60 +277,144 @@ public class XMLMapperBuilder extends BaseBuilder {
 
         if (context != null) {
 
+            //增加<cache-ref></cache-ref>标签引用的命名空间之间的对应关系
             configuration.addCacheRef(builderAssistant.getCurrentNamespace(), context.getStringAttribute("namespace"));
 
+            //缓存索引解析器
             CacheRefResolver cacheRefResolver =
                     new CacheRefResolver(builderAssistant, context.getStringAttribute("namespace"));
 
             try {
 
+                //尝试是否能索引到缓存对象
                 cacheRefResolver.resolveCacheRef();
 
             } catch (IncompleteElementException e) {
 
+                //没有找到索引的缓存对象，将缓存索引解析器先保存
                 configuration.addIncompleteCacheRef(cacheRefResolver);
             }
         }
     }
 
+    /**
+     * 解析<cache></cache>标签
+     *
+     * @param context       cache节点对象
+     * @throws Exception    无作用
+     */
     private void cacheElement(XNode context) throws Exception {
+
+        //节点对象存在就开始解析
         if (context != null) {
+
+            //缓存类型，默认为系统的PERPETUAL
             String type = context.getStringAttribute("type", "PERPETUAL");
+
+            //从类型别名注册器中找到该类型
             Class<? extends Cache> typeClass = typeAliasRegistry.resolveAlias(type);
+
+            //获取缓存回收策略类型，默认是LRU(最近最少使用)
+            //可以设置的回收策略类型为：
+            //          LRU(最近最少使用，移除最长时间不用的对象)
+            //          FIFO(先进显先出，按对象进入缓存的顺序来移除它们)
+            //          SOFT(软引用，移除基于垃圾回收器状态和软引用规则的对象)
+            //          WEAK(弱引用，更积极的移除基于垃圾回收器状态和弱引用规则的对象)
             String eviction = context.getStringAttribute("eviction", "LRU");
+
+            //获取缓存回收策略的类
             Class<? extends Cache> evictionClass = typeAliasRegistry.resolveAlias(eviction);
+
+            //刷新时间间隔，单位为毫秒，如果不配置，那么当SQL执行的时候才会去刷新缓存
             Long flushInterval = context.getLongAttribute("flushInterval");
+
+            //引用数目，表示缓存最多可以存储多少个对象
             Integer size = context.getIntAttribute("size");
+
+            //是否是只读，如果是只读，就意味着缓存数据只能读取不能修改，默认是false
+            //这里对得到的值进行了取非，属性的含义为读写
             boolean readWrite = !context.getBooleanAttribute("readOnly", false);
+
+            //读取数据的时候是否阻塞
             boolean blocking = context.getBooleanAttribute("blocking", false);
+
+            //获取属性配置的值
             Properties props = context.getChildrenAsProperties();
+
+            //创建并设置缓存对象
             builderAssistant.useNewCache(typeClass, evictionClass, flushInterval, size, readWrite, blocking, props);
         }
     }
 
+    /**
+     * 解析<parameterMap></parameterMap>标签
+     *
+     * @param list          <parameterMap></parameterMap>标签对象
+     * @throws Exception    无
+     */
     private void parameterMapElement(List<XNode> list) throws Exception {
+
+        //遍历parameterMap对象
         for (XNode parameterMapNode : list) {
+
+            //
             String id = parameterMapNode.getStringAttribute("id");
+
+            //
             String type = parameterMapNode.getStringAttribute("type");
+            //
             Class<?> parameterClass = resolveClass(type);
+
+            //
             List<XNode> parameterNodes = parameterMapNode.evalNodes("parameter");
+            //
             List<ParameterMapping> parameterMappings = new ArrayList<ParameterMapping>();
+
+            //
             for (XNode parameterNode : parameterNodes) {
+
+                //
                 String property = parameterNode.getStringAttribute("property");
+
+                //
                 String javaType = parameterNode.getStringAttribute("javaType");
+
+                //
                 String jdbcType = parameterNode.getStringAttribute("jdbcType");
+
+                //
                 String resultMap = parameterNode.getStringAttribute("resultMap");
+
+                //
                 String mode = parameterNode.getStringAttribute("mode");
+
+                //
                 String typeHandler = parameterNode.getStringAttribute("typeHandler");
+
+                //
                 Integer numericScale = parameterNode.getIntAttribute("numericScale");
+
+                //
                 ParameterMode modeEnum = resolveParameterMode(mode);
+
+                //
                 Class<?> javaTypeClass = resolveClass(javaType);
+
+                //
                 JdbcType jdbcTypeEnum = resolveJdbcType(jdbcType);
+
+                //
                 @SuppressWarnings("unchecked")
                 Class<? extends TypeHandler<?>> typeHandlerClass = (Class<? extends TypeHandler<?>>) resolveClass(typeHandler);
+
+                //
                 ParameterMapping parameterMapping = builderAssistant.buildParameterMapping(parameterClass, property, javaTypeClass, jdbcTypeEnum, resultMap, modeEnum, typeHandlerClass, numericScale);
+
+                //
                 parameterMappings.add(parameterMapping);
             }
+
+            //
             builderAssistant.addParameterMap(id, parameterClass, parameterMappings);
         }
     }
@@ -338,7 +432,7 @@ public class XMLMapperBuilder extends BaseBuilder {
 
             try {
 
-                //解析
+                //解析resultMap
                 resultMapElement(resultMapNode);
             } catch (IncompleteElementException e) {
                 // ignore, it will be retried
@@ -528,16 +622,27 @@ public class XMLMapperBuilder extends BaseBuilder {
     }
 
     /**
-     * @param list
+     * 解析<sql></sql>标签
+     *
+     * @param list          sql标签对象
      * @throws Exception
      */
     private void sqlElement(List<XNode> list) throws Exception {
+
         if (configuration.getDatabaseId() != null) {
+
             sqlElement(list, configuration.getDatabaseId());
         }
+
         sqlElement(list, null);
     }
 
+    /**
+     *
+     * @param list
+     * @param requiredDatabaseId
+     * @throws Exception
+     */
     private void sqlElement(List<XNode> list, String requiredDatabaseId) throws Exception {
         for (XNode context : list) {
             String databaseId = context.getStringAttribute("databaseId");

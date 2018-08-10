@@ -70,9 +70,9 @@ public class MapperBuilderAssistant extends BaseBuilder {
     private Cache currentCache;
 
     /**
-     *
+     * issue #676
      */
-    private boolean unresolvedCacheRef; // issue #676
+    private boolean unresolvedCacheRef;
 
 
     public MapperBuilderAssistant(Configuration configuration, String resource) {
@@ -137,6 +137,18 @@ public class MapperBuilderAssistant extends BaseBuilder {
         }
     }
 
+    /**
+     * 当配置了<cache></cache>标签后，会调用该方法
+     *
+     * @param typeClass         使用的缓存对象的类型
+     * @param evictionClass     缓存回收策略的类型
+     * @param flushInterval     刷新间隔时间(ms)
+     * @param size              缓存对象中存储的最大数据量
+     * @param readWrite         缓存中的数据是否是可读写的
+     * @param blocking          是否阻塞
+     * @param props             配置缓存对象时的一些参数值
+     * @return                  创建的缓存对象
+     */
     public Cache useNewCache(Class<? extends Cache> typeClass,
                              Class<? extends Cache> evictionClass,
                              Long flushInterval,
@@ -144,6 +156,8 @@ public class MapperBuilderAssistant extends BaseBuilder {
                              boolean readWrite,
                              boolean blocking,
                              Properties props) {
+
+        //创建缓存对象
         Cache cache = new CacheBuilder(currentNamespace)
                 .implementation(valueOrDefault(typeClass, PerpetualCache.class))
                 .addDecorator(valueOrDefault(evictionClass, LruCache.class))
@@ -153,8 +167,14 @@ public class MapperBuilderAssistant extends BaseBuilder {
                 .blocking(blocking)
                 .properties(props)
                 .build();
+
+        //将缓存对象添加到配置文件中
         configuration.addCache(cache);
+
+        //设置当前mapper的缓存对象
         currentCache = cache;
+
+        //返回缓存对象
         return cache;
     }
 

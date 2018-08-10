@@ -297,7 +297,7 @@ public class Configuration {
     protected final Map<String, MappedStatement> mappedStatements = new StrictMap<MappedStatement>("Mapped Statements collection");
 
     /**
-     *
+     * 存放缓存对象的集合（二级缓存的缓存对象）
      */
     protected final Map<String, Cache> caches = new StrictMap<Cache>("Caches collection");
 
@@ -317,7 +317,7 @@ public class Configuration {
     protected final Map<String, KeyGenerator> keyGenerators = new StrictMap<KeyGenerator>("Key Generators collection");
 
     /**
-     *
+     * 存放已经加载成功的资源，比如mapper接口，mapper.xml文件
      */
     protected final Set<String> loadedResources = new HashSet<String>();
 
@@ -332,7 +332,11 @@ public class Configuration {
     protected final Collection<XMLStatementBuilder> incompleteStatements = new LinkedList<XMLStatementBuilder>();
 
     /**
-     *
+     * 存放已经解析完成的缓存索引对象的解析器，主要是解析mapper.xml文件中的<cache-ref></cache-ref>标签得到的结果
+     * 当解析该<cache-ref></cache-ref>标签的时候，没有找到对应的缓存对象(可能是该缓存对象还没有解析出来)
+     * 因此将该缓存索引解析器保存下来，在之后再进行查找缓存对象，
+     * 也就是在 org.apache.ibatis.session.Configuration#caches 属性中找
+     * 具体逻辑，请看 org.apache.ibatis.builder.xml.XMLMapperBuilder#cacheRefElement(org.apache.ibatis.parsing.XNode)
      */
     protected final Collection<CacheRefResolver> incompleteCacheRefs = new LinkedList<CacheRefResolver>();
 
@@ -346,10 +350,13 @@ public class Configuration {
      */
     protected final Collection<MethodResolver> incompleteMethods = new LinkedList<MethodResolver>();
 
-    /*
+    /**
      * A map holds cache-ref relationship. The key is the namespace that
      * references a cache bound to another namespace and the value is the
      * namespace which the actual cache is bound to.
+     * 用于保持<cache-ref></cache-ref>标签之间的关系的map
+     * key是标签所在的mapper的命名空间的名称
+     * value是引用的mapper的命名空间的名称
      */
     protected final Map<String, String> cacheRefMap = new HashMap<String, String>();
 

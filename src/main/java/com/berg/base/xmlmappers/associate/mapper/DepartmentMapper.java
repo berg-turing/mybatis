@@ -2,6 +2,8 @@ package com.berg.base.xmlmappers.associate.mapper;
 
 import com.berg.base.xmlmappers.associate.dto.Department;
 
+import java.util.List;
+
 public interface DepartmentMapper {
 
     /**
@@ -11,4 +13,6 @@ public interface DepartmentMapper {
      * @return                  查找到的院系对象
      */
     Department selectOne(Long departmentId);
+
+    List<Department> test(Department department);
 }

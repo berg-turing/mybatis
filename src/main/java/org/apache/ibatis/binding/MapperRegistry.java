@@ -127,10 +127,11 @@ public class MapperRegistry {
     /**
      * @since 3.2.2
      * <p>
-     * 注解所有的mapper接口
+     * 将指定的包下的所有mapper资源加载
      */
     public void addMappers(String packageName, Class<?> superType) {
 
+        //找到该包下面所有的mapper接口
         ResolverUtil<Class<?>> resolverUtil = new ResolverUtil<Class<?>>();
         resolverUtil.find(new ResolverUtil.IsA(superType), packageName);
         Set<Class<? extends Class<?>>> mapperSet = resolverUtil.getClasses();
