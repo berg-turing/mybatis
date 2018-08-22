@@ -26,10 +26,25 @@ import java.util.Properties;
  */
 public interface Interceptor {
 
+    /**
+     *
+     * @param invocation
+     * @return
+     * @throws Throwable
+     */
     Object intercept(Invocation invocation) throws Throwable;
 
+    /**
+     *
+     * @param target
+     * @return
+     */
     Object plugin(Object target);
 
+    /**
+     *
+     * @param properties
+     */
     void setProperties(Properties properties);
 
 }

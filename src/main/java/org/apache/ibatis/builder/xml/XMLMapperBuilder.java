@@ -362,6 +362,7 @@ public class XMLMapperBuilder extends BaseBuilder {
 
             //
             String type = parameterMapNode.getStringAttribute("type");
+
             //
             Class<?> parameterClass = resolveClass(type);
 

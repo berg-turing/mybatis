@@ -10,14 +10,21 @@ import java.util.Properties;
  */
 
 public class MyPlugins implements Interceptor{
+
+    @Override
     public Object intercept(Invocation invocation) throws Throwable {
+
+
         return null;
     }
 
+    @Override
     public Object plugin(Object o) {
+
         return null;
     }
 
+    @Override
     public void setProperties(Properties properties) {
 
     }

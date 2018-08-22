@@ -23,10 +23,27 @@ import java.lang.reflect.Method;
  */
 public class Invocation {
 
+    /**
+     *
+     */
     private final Object target;
+
+    /**
+     *
+     */
     private final Method method;
+
+    /**
+     *
+     */
     private final Object[] args;
 
+    /**
+     *
+     * @param target
+     * @param method
+     * @param args
+     */
     public Invocation(Object target, Method method, Object[] args) {
         this.target = target;
         this.method = method;
