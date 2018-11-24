@@ -51,9 +51,10 @@ public interface StatementHandler {
             throws SQLException;
 
     /**
+     * 批量操作
      *
-     * @param statement
-     * @throws SQLException
+     * @param statement Statement对象
+     * @throws SQLException SQL语句执行异常
      */
     void batch(Statement statement)
             throws SQLException;

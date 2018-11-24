@@ -42,108 +42,97 @@ public interface Executor {
     /**
      * 更新数据
      *
-     * @param ms                MappedStatement对象
-     * @param parameter         处理之后的参数对象
-     * @return                  处理结果影响的数据的条数
-     * @throws SQLException     SQL语句执行过程中的异常
+     * @param ms        MappedStatement对象
+     * @param parameter 处理之后的参数对象
+     * @return 处理结果影响的数据的条数
+     * @throws SQLException SQL语句执行过程中的异常
      */
-    int update(MappedStatement ms,
-               Object parameter) throws SQLException;
+    int update(MappedStatement ms, Object parameter) throws SQLException;
 
     /**
      * 执行普通SQL查询数据
      *
-     * @param ms                MappedStatement对象
-     * @param parameter         处理之后的参数对象
-     * @param rowBounds         分页对象
-     * @param resultHandler     结果处理器对象
-     * @param cacheKey          缓存的key
-     * @param boundSql          BoundSql对象
-     * @param <E>               当前操作的数据的泛型
-     * @return                  查询结果
-     * @throws SQLException     SQL语句执行过程中的异常
+     * @param ms            MappedStatement对象
+     * @param parameter     处理之后的参数对象
+     * @param rowBounds     分页对象
+     * @param resultHandler 结果处理器对象
+     * @param cacheKey      缓存的key
+     * @param boundSql      BoundSql对象
+     * @param <E>           当前操作的数据的泛型
+     * @return 查询结果
+     * @throws SQLException SQL语句执行过程中的异常
      */
-    <E> List<E> query(MappedStatement ms,
-                      Object parameter,
-                      RowBounds rowBounds,
-                      ResultHandler resultHandler,
-                      CacheKey cacheKey,
-                      BoundSql boundSql) throws SQLException;
+    <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler,
+                      CacheKey cacheKey, BoundSql boundSql) throws SQLException;
 
     /**
      * 执行普通SQL查询数据
      *
-     * @param ms                MappedStatement对象
-     * @param parameter         处理之后的参数对象
-     * @param rowBounds         分页对象
-     * @param resultHandler     结果处理器对象
-     * @param <E>               当前操作的数据的泛型
-     * @return                  查询结果
-     * @throws SQLException     SQL语句执行过程中的异常
+     * @param ms            MappedStatement对象
+     * @param parameter     处理之后的参数对象
+     * @param rowBounds     分页对象
+     * @param resultHandler 结果处理器对象
+     * @param <E>           当前操作的数据的泛型
+     * @return 查询结果
+     * @throws SQLException SQL语句执行过程中的异常
      */
-    <E> List<E> query(MappedStatement ms,
-                      Object parameter,
-                      RowBounds rowBounds,
-                      ResultHandler resultHandler) throws SQLException;
+    <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler) throws SQLException;
 
     /**
      * 执行Cursor查询
      *
-     * @param ms                MappedStatement对象
-     * @param parameter         处理之后的参数对象
-     * @param rowBounds         分页对象
-     * @param <E>               当前操作的数据的泛型
-     * @return                  查询结果
-     * @throws SQLException     SQL语句执行过程中的异常
+     * @param ms        MappedStatement对象
+     * @param parameter 处理之后的参数对象
+     * @param rowBounds 分页对象
+     * @param <E>       当前操作的数据的泛型
+     * @return 查询结果
+     * @throws SQLException SQL语句执行过程中的异常
      */
-    <E> Cursor<E> queryCursor(MappedStatement ms,
-                              Object parameter,
-                              RowBounds rowBounds) throws SQLException;
+    <E> Cursor<E> queryCursor(MappedStatement ms, Object parameter, RowBounds rowBounds) throws SQLException;
 
     /**
+     * 刷新statement
      *
-     *
-     * @return
-     * @throws SQLException
+     * @return 批处理的结果
+     * @throws SQLException SQL执行异常
      */
     List<BatchResult> flushStatements() throws SQLException;
 
     /**
+     * 提交事务
      *
-     * @param required
-     * @throws SQLException
+     * @param required 是否需要提交事务
+     * @throws SQLException SQL执行异常
      */
     void commit(boolean required) throws SQLException;
 
     /**
+     * 回滚事务
      *
-     * @param required
-     * @throws SQLException
+     * @param required 是否需要回滚事务
+     * @throws SQLException SQL执行异常
      */
     void rollback(boolean required) throws SQLException;
 
     /**
      * 创建缓存key
      *
-     * @param ms                    MappedStatement对象
-     * @param parameterObject       处理之后的参数对象
-     * @param rowBounds             分页对象
-     * @param boundSql              BoundSql对象
-     * @return                      生成成功的缓存key对象
+     * @param ms              MappedStatement对象
+     * @param parameterObject 处理之后的参数对象
+     * @param rowBounds       分页对象
+     * @param boundSql        BoundSql对象
+     * @return 生成成功的缓存key对象
      */
-    CacheKey createCacheKey(MappedStatement ms,
-                            Object parameterObject,
-                            RowBounds rowBounds,
-                            BoundSql boundSql);
+    CacheKey createCacheKey(MappedStatement ms, Object parameterObject, RowBounds rowBounds, BoundSql boundSql);
 
     /**
+     * 判断当前MappedStatement是否已经缓存
      *
-     * @param ms
-     * @param key
-     * @return
+     * @param ms  MappedStatement对象
+     * @param key 缓存key
+     * @return 判断结果
      */
-    boolean isCached(MappedStatement ms,
-                     CacheKey key);
+    boolean isCached(MappedStatement ms, CacheKey key);
 
     /**
      * 清理本地缓存
@@ -151,18 +140,13 @@ public interface Executor {
     void clearLocalCache();
 
     /**
-     *
      * @param ms
      * @param resultObject
      * @param property
      * @param key
      * @param targetType
      */
-    void deferLoad(MappedStatement ms,
-                   MetaObject resultObject,
-                   String property,
-                   CacheKey key,
-                   Class<?> targetType);
+    void deferLoad(MappedStatement ms, MetaObject resultObject, String property, CacheKey key, Class<?> targetType);
 
     /**
      * 获取事务对象

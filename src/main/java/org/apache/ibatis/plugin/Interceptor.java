@@ -18,32 +18,33 @@ package org.apache.ibatis.plugin;
 import java.util.Properties;
 
 /**
- * @author Clinton Begin
- */
-
-/**
+ * 插件接口
  *
+ * @author Clinton Begin
  */
 public interface Interceptor {
 
     /**
+     * 当前插件实现的额外的功能方法
      *
-     * @param invocation
-     * @return
-     * @throws Throwable
+     * @param invocation 调用对象，内部包含四个基本对象
+     * @return 执行结果
+     * @throws Throwable 处理过程中的异常
      */
     Object intercept(Invocation invocation) throws Throwable;
 
     /**
+     * 生成插件的代理对象
      *
-     * @param target
-     * @return
+     * @param target 代理的目标对象
+     * @return 生成的代理对象
      */
     Object plugin(Object target);
 
     /**
+     * 设置额外的属性对象
      *
-     * @param properties
+     * @param properties 待设置的属性对象
      */
     void setProperties(Properties properties);
 
