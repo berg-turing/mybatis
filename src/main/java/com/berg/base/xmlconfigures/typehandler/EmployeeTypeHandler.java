@@ -21,21 +21,25 @@ public class EmployeeTypeHandler implements TypeHandler<Employee>{
      */
     private static String SPLIT_SYM = ",";
 
+    @Override
     public void setParameter(PreparedStatement preparedStatement, int i, Employee employee, JdbcType jdbcType) throws SQLException {
 
         preparedStatement.setString(i, String.valueOf(employee.getId() + SPLIT_SYM + employee.getName()));
     }
 
+    @Override
     public Employee getResult(ResultSet resultSet, String s) throws SQLException {
 
         return processString(resultSet.getString(s));
     }
 
+    @Override
     public Employee getResult(ResultSet resultSet, int i) throws SQLException {
 
         return processString(resultSet.getString(i));
     }
 
+    @Override
     public Employee getResult(CallableStatement callableStatement, int i) throws SQLException {
 
         return processString(callableStatement.getString(i));

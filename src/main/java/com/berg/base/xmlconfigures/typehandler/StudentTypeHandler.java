@@ -21,21 +21,25 @@ public class StudentTypeHandler extends BaseTypeHandler<Student>{
      */
     private static String SPLIT_SYM = ",";
 
+    @Override
     public void setNonNullParameter(PreparedStatement preparedStatement, int i, Student student, JdbcType jdbcType) throws SQLException {
 
         preparedStatement.setString(i, String.valueOf(student.getId()) + SPLIT_SYM + student.getName());
     }
 
+    @Override
     public Student getNullableResult(ResultSet resultSet, String s) throws SQLException {
 
         return processString(resultSet.getString(s));
     }
 
+    @Override
     public Student getNullableResult(ResultSet resultSet, int i) throws SQLException {
 
         return processString(resultSet.getString(i));
     }
 
+    @Override
     public Student getNullableResult(CallableStatement callableStatement, int i) throws SQLException {
 
         return processString(callableStatement.getString(i));

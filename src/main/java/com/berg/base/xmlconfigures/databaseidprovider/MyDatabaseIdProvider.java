@@ -8,10 +8,12 @@ import java.util.Properties;
 
 public class MyDatabaseIdProvider implements DatabaseIdProvider {
 
+    @Override
     public void setProperties(Properties properties) {
 
     }
 
+    @Override
     public String getDatabaseId(DataSource dataSource) throws SQLException {
         return null;
     }

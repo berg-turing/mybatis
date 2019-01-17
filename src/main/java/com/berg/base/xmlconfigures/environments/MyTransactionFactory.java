@@ -13,14 +13,17 @@ import java.util.Properties;
  */
 public class MyTransactionFactory implements TransactionFactory {
 
+    @Override
     public void setProperties(Properties properties) {
 
     }
 
+    @Override
     public Transaction newTransaction(Connection connection) {
         return null;
     }
 
+    @Override
     public Transaction newTransaction(DataSource dataSource, TransactionIsolationLevel transactionIsolationLevel, boolean b) {
         return null;
     }
